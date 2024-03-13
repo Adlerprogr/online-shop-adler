@@ -38,7 +38,7 @@ function validateRegistrate(array $arr):array
             $errors['email'] =  'Email cannot have less than 2 characters';
         } elseif (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
             $errors['email'] =  'Invalid email address';
-        } elseif ()
+        }
     } else {
         $errors['email'] =  'Email must be fill';
     }
