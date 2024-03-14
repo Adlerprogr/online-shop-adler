@@ -1,6 +1,4 @@
 <?php
-
-$arr = $_POST;
 function validateRegistrate(array $arr):array
 {
     $errors = [];
@@ -32,7 +30,14 @@ function validateRegistrate(array $arr):array
     if (isset($arr['email'])) {
         $email = $arr['email'];
 
-        if (empty($email)) {
+        $pdo = new PDO("pgsql:host=db; port=5432; dbname=laravel", "root", "root");
+        $stmt = $pdo->prepare("SELECT * FROM users WHERE email = :email");
+        $stmt->execute(['email' => $email]);
+        $validateEmail = $stmt->fetch();
+
+        if ($validateEmail) {
+            $errors['email'] =  'User with such email already exists';
+        } elseif (empty($email)) {
             $errors['email'] =  'Email not be empty';
         } elseif (strlen($email) < 2) {
             $errors['email'] =  'Email cannot have less than 2 characters';
@@ -68,7 +73,7 @@ function validateRegistrate(array $arr):array
     return $errors;
 }
 
-$errors = validateRegistrate($arr);
+$errors = validateRegistrate($_POST);
 
 if (empty($errors)) {
     $pdo = new PDO("pgsql:host=db; port=5432; dbname=laravel", "root", "root");

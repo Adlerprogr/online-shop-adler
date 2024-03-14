@@ -1,6 +1,4 @@
 <?php
-
-$arr = $_POST;
 function validateLogin(array $arr):array
 {
     $errors = [];
@@ -31,7 +29,8 @@ function validateLogin(array $arr):array
 
     return $errors;
 }
-$errors = validateLogin($arr);
+
+$errors = validateLogin($_POST);
 
 if (empty($errors)) {
     $pdo = new PDO("pgsql:host=db; port=5432; dbname=laravel", "root", "root");
