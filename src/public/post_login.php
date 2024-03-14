@@ -53,8 +53,6 @@ if (empty($errors)) {
     } else {
         echo 'The email or password is not correct';
     }
-
-//    print_r($result);
 }
 
 require_once './login.php';

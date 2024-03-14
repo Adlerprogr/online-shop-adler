@@ -1,25 +1,37 @@
+<?php
+
+session_start();
+if (!isset($_SESSION['user_id'])) {
+    header("Location: /login.php");
+}
+
+$pdo = new PDO("pgsql:host=db; port=5432; dbname=laravel", "root", "root");
+
+$stmt = $pdo->query("SELECT * FROM products");
+$products = $stmt->fetchAll();
+
+//if (empty($products)) {
+//    echo 'Are no products';
+//    die();
+//}
+?>
+
 <!DOCTYPE html>
 <html lang="en">
 
 <div class="login">
-    <h1>Registration</h1>
-    <form name="signup_form" method="post" action="/registrate" autocomplete="off">
-        <label style="color: red"><?php echo $errors['first_name'] ?? ''; ?></label>
-        <input type="text" name="first_name" placeholder="First Name" required="required" />
+    <h1>Add product</h1>
+    <form name="signup_form" method="post" action="/add-product" autocomplete="off">
+        <label style="color: red"><?php echo $errors['user_id'] ?? ''; ?></label>
+        <input type="text" name="user_id" placeholder="User ID" required="required" />
 
-        <label style="color: red"><?php echo $errors['last_name'] ?? ''; ?></label>
-        <input type="text" name="last_name" placeholder="Last Name" required="required" />
+        <label style="color: red"><?php echo $errors['product_id'] ?? ''; ?></label>
+        <input type="text" name="product_id" placeholder="Product ID" required="required" />
 
-        <label style="color: red"><?php echo $errors['email'] ?? ''; ?></label>
-        <input type="text" name="email" placeholder="Email" required="required" />
+        <label style="color: red"><?php echo $errors['quantity'] ?? ''; ?></label>
+        <input type="text" name="quantity" placeholder="Quantity" required="required" />
 
-        <label style="color: red"><?php echo $errors['password'] ?? ''; ?></label>
-        <input type="password" name="password" placeholder="Password" required="required" />
-
-        <label style="color: red"><?php echo $errors['repeat_password'] ?? ''; ?></label>
-        <input type="password" name="repeat_password" placeholder="Repeat Password" required="required" />
-
-        <button type="submit" class="btn btn-primary btn-block btn-large">Register</button>
+        <button type="submit" class="btn btn-primary btn-block btn-large">Add</button>
     </form>
 </div>
 

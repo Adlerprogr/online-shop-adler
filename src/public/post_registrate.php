@@ -31,6 +31,7 @@ function validateRegistrate(array $arr):array
         $email = $arr['email'];
 
         $pdo = new PDO("pgsql:host=db; port=5432; dbname=laravel", "root", "root");
+
         $stmt = $pdo->prepare("SELECT * FROM users WHERE email = :email");
         $stmt->execute(['email' => $email]);
         $validateEmail = $stmt->fetch();
@@ -73,6 +74,10 @@ function validateRegistrate(array $arr):array
     return $errors;
 }
 
+//if (validateRegistrate($_POST)) {
+//    $pdo = new PDO("pgsql:host=db; port=5432; dbname=laravel", "root", "root");
+//}
+
 $errors = validateRegistrate($_POST);
 
 if (empty($errors)) {
@@ -86,11 +91,6 @@ if (empty($errors)) {
 
     $stmt = $pdo->prepare("INSERT INTO users (first_name, last_name, email, password) VALUES (:first_name, :last_name, :email, :password)");
     $stmt->execute(['first_name' => $firstName, 'last_name' => $lastName, 'email' => $email, 'password' => $password]);
-
-    $stmt = $pdo->prepare("SELECT * FROM users WHERE email = :email");
-    $stmt->execute(['email' => $email]);
-
-    $result = $stmt->fetch();
 }
 
 require_once './registrate.php';
