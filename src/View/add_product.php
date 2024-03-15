@@ -2,7 +2,7 @@
 
 session_start();
 if (!isset($_SESSION['user_id'])) {
-    header("Location: /login.php");
+    header("Location: /login");
 }
 
 $pdo = new PDO("pgsql:host=db; port=5432; dbname=laravel", "root", "root");
@@ -10,10 +10,10 @@ $pdo = new PDO("pgsql:host=db; port=5432; dbname=laravel", "root", "root");
 $stmt = $pdo->query("SELECT * FROM products");
 $products = $stmt->fetchAll();
 
-//if (empty($products)) {
-//    echo 'Are no products';
-//    die();
-//}
+if (empty($products)) {
+    echo 'Are no products';
+    die();
+}
 ?>
 
 <!DOCTYPE html>

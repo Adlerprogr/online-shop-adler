@@ -1,19 +1,8 @@
 <?php
+require_once './../Controller/Main.php';
 
-session_start();
-if (!isset($_SESSION['user_id'])) {
-    header("Location: /login.php");
-}
-
-$pdo = new PDO("pgsql:host=db; port=5432; dbname=laravel", "root", "root");
-
-$stmt = $pdo->query("SELECT * FROM products");
-$products = $stmt->fetchAll();
-
-if (empty($products)) {
-    echo 'Are no products';
-    die();
-}
+$obj = new Main();
+$obj->userVerification();
 ?>
 
 <section class="container">

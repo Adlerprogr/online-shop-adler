@@ -4,35 +4,51 @@ $uri = $_SERVER['REQUEST_URI'];
 $method = $_SERVER['REQUEST_METHOD'];
 
 if ($uri === '/registrate') {
+    require_once './../Controller/User.php';
+    $obj = new User();
+
     if ($method === "GET") {
-        require_once 'registrate.php';
+        $obj->getRegistrate();
     } elseif ($method === "POST") {
-        require_once 'post_registrate.php';
+        $obj->userRegistrate();
     } else {
         echo "$method is not supported for $uri";
     }
+
 } elseif ($uri === '/login') {
+    require_once './../Controller/User.php';
+    $obj = new User();
+
     if ($method === "GET") {
-        require_once 'login.php';
+        $obj->getLogin();
     } elseif ($method === "POST") {
-        require_once 'post_login.php';
+        $obj->systemLogin();
     } else {
         echo "$method is not supported for $uri";
     }
+
 } elseif ($uri === '/main') {
+    require_once './../Controller/Main.php';
+    $obj = new Main();
+
     if ($method === "GET") {
-        require_once 'main.php';
+        $obj->userVerification();
     } else {
         echo "$method is not supported for $uri";
     }
+
 } elseif ($uri === '/add-product') {
+    require_once './../Controller/Product.php';
+    $obj = new Product();
+
     if ($method === "GET") {
-        require_once 'add_product.php';
+        $obj->getAddProduct();
     } elseif ($method === "POST") {
-        require_once 'post_add_product.php';
+        $obj->addUsersProduct();
     } else {
         echo "$method is not supported for $uri";
     }
+
 } else {
-    require_once '404.html';
+    require_once './../View/404.html';
 }
