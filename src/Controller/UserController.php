@@ -120,12 +120,13 @@ class UserController
             require_once './../Model/User.php';
             $userModel = new User();
             $getEmail = $userModel->getUserByEmail($email);
+            $getUser = $userModel->getUserByUser($email);
 
             if (!empty($getEmail)) {
-                if (password_verify($password, $user['password'])) {
+                if (password_verify($password, $getUser['password'])) {
                     session_start();
-                    $_SESSION['user_id'] = $user['id'];
-                    header("Location: /main.php");
+                    $_SESSION['user_id'] = $getUser['id'];
+                    header("Location: /main");
                 } else {
                     echo 'The email or password is not correct';
                 }

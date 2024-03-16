@@ -23,7 +23,13 @@ class ProductController
 
             require_once './../Model/Product.php';
             $productModel = new Product();
-            $productModel->create($user_id, $product_id, $quantity);
+            $check = $productModel->checkProduct($user_id, $product_id);
+
+            if (empty($check)) {
+                $productModel->create($user_id, $product_id, $quantity);
+            } else {
+                $productModel->updateQuantity($user_id, $product_id, $quantity);
+            }
         }
 
         require_once './../View/add_product.php';

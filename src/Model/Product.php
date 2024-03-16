@@ -34,4 +34,23 @@ class Product
 
         return $getProduct;
     }
+
+    public function updateQuantity(int $user_id, int $product_id, int $quantity):void
+    {
+        $pdo = new PDO("pgsql:host=db; port=5432; dbname=laravel", "root", "root");
+
+        $stmt = $pdo->prepare("UPDATE user_products SET quantity = (quantity + :quantity) WHERE user_id = :user_id AND product_id = :product_id");
+        $stmt->execute(['user_id' => $user_id, 'product_id' => $product_id, 'quantity' => $quantity]);
+    }
+
+    public function checkProduct(int $user_id, int $product_id)
+    {
+        $pdo = new PDO("pgsql:host=db; port=5432; dbname=laravel", "root", "root");
+
+        $stmt = $pdo->prepare("SELECT * FROM user_products WHERE user_id = :user_id AND product_id = :product_id");
+        $stmt->execute(['user_id' => $user_id, 'product_id' => $product_id]);
+        $resultCheck = $stmt->fetch();
+
+        return $resultCheck;
+    }
 }

@@ -7,16 +7,16 @@ class MainController
         require_once './../View/main.php';
     }
 
-    public function userVerification():void
+    public function userVerification()
     {
         if (session_status() == PHP_SESSION_NONE) {
             session_start();
             if (!isset($_SESSION['user_id'])) {
-                header("Location: /login.php");
+                header("Location: /login");
             }
         } else {
             if (!isset($_SESSION['user_id'])) {
-                header("Location: /login.php");
+                header("Location: /login");
             }
         }
 //        session_start();
