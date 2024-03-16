@@ -2,21 +2,16 @@
 
 class UserController
 {
-    public function getRegistrate()
+    public function registForm():void
     {
         require_once './../View/registrate.php';
     }
 
-    public function userRegistrate()
+    public function registrate():void
     {
-        //if (validateRegistrate($_POST)) {
-        //    $pdo = new PDO("pgsql:host=db; port=5432; dbname=laravel", "root", "root");
-        ////}
-
         $errors = $this->validateRegistrate($_POST);
 
         if (empty($errors)) {
-
             $firstName = $_POST['first_name'];
             $lastName = $_POST['last_name'];
             $email = $_POST['email'];
@@ -104,12 +99,12 @@ class UserController
         return $errors;
     }
 
-    public function getLogin()
+    public function loginForm():void
     {
         require_once './../View/login.php';
     }
 
-    public function systemLogin()
+    public function systemLogin():void
     {
         $errors = $this->validateLogin($_POST);
 
@@ -120,7 +115,7 @@ class UserController
             require_once './../Model/User.php';
             $userModel = new User();
             $getEmail = $userModel->getUserByEmail($email);
-            $getUser = $userModel->getUserByUser($email);
+            $getUser = $userModel->getUser($email);
 
             if (!empty($getEmail)) {
                 if (password_verify($password, $getUser['password'])) {

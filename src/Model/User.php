@@ -2,7 +2,7 @@
 
 class User
 {
-    public function create(string $firstName, string $lastName, string $email, $password)
+    public function create(string $firstName, string $lastName, string $email, $password):void
     {
         $pdo = new PDO("pgsql:host=db; port=5432; dbname=laravel", "root", "root");
 
@@ -21,7 +21,7 @@ class User
         return $getEmail;
     }
 
-    public function getUserByUser(string $email)
+    public function getUser(string $email)
     {
         $pdo = new PDO("pgsql:host=db; port=5432; dbname=laravel", "root", "root");
 

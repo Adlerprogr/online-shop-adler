@@ -8,9 +8,9 @@ if ($uri === '/registrate') {
     $obj = new UserController();
 
     if ($method === "GET") {
-        $obj->getRegistrate();
+        $obj->registForm();
     } elseif ($method === "POST") {
-        $obj->userRegistrate();
+        $obj->registrate();
     } else {
         echo "$method is not supported for $uri";
     }
@@ -20,7 +20,7 @@ if ($uri === '/registrate') {
     $obj = new UserController();
 
     if ($method === "GET") {
-        $obj->getLogin();
+        $obj->loginForm();
     } elseif ($method === "POST") {
         $obj->systemLogin();
     } else {
@@ -42,7 +42,7 @@ if ($uri === '/registrate') {
     $obj = new ProductController();
 
     if ($method === "GET") {
-        $obj->getAddProduct();
+        $obj->pathToAdding();
     } elseif ($method === "POST") {
         $obj->addUsersProduct();
     } else {

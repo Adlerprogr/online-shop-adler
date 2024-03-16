@@ -1,9 +1,5 @@
-<?php
-require_once './../Controller/MainController.php';
-
-$obj = new MainController();
-$obj->userVerification();
-?>
+<!DOCTYPE html>
+<html lang="en">
 
 <section class="container">
 

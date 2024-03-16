@@ -2,7 +2,7 @@
 
 class MainController
 {
-    public function getMain():void
+    public function pathToPage():void
     {
         require_once './../View/main.php';
     }
@@ -19,20 +19,15 @@ class MainController
                 header("Location: /login");
             }
         }
-//        session_start();
-//        if (!isset($_SESSION['user_id'])) {
-//            header("Location: /login.php");
-//        }
 
-        require_once './../Model/Main.php';
-        $mainModel = new Main();
+        require_once './../Model/Product.php';
+        $mainModel = new Product();
         $products = $mainModel->getProduct();
 
         if (empty($products)) {
-            echo 'Are no products';
-            die();
+            return 'Are no products';
+        } else {
+            require_once './../View/main.php';
         }
-
-        require_once './../View/main.php';
     }
 }

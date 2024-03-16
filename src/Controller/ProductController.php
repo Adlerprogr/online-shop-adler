@@ -2,7 +2,7 @@
 
 class ProductController
 {
-    public function getAddProduct():void
+    public function pathToAdding():void
     {
         require_once './../View/add_product.php';
     }
@@ -58,8 +58,8 @@ class ProductController
         if (isset($arr['product_id'])) {
             $product_id = $arr['product_id'];
 
-            require_once './../Model/Product.php';
-            $productUser = new Product();
+//            require_once './../Model/Product.php';
+//            $productUser = new Product();
             $getProduct = $productUser->getProductById($product_id);
 
             if (empty($product_id)) {
@@ -84,5 +84,25 @@ class ProductController
         }
 
         return $errors;
+    }
+
+    public function userVerification()
+    {
+        if (session_status() == PHP_SESSION_NONE) {
+            session_start();
+            if (!isset($_SESSION['user_id'])) {
+                header("Location: /login");
+            }
+        }
+
+        require_once './../Model/Product.php';
+        $productModel = new Product();
+        $products = $productModel->getProduct();
+
+        if (empty($products)) {
+            return 'Are no products';
+        } else {
+            require_once './../View/add_product.php';
+        }
     }
 }
