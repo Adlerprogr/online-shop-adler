@@ -1,6 +1,6 @@
 <?php
 
-class User
+class UserController
 {
     public function getRegistrate()
     {
@@ -16,7 +16,6 @@ class User
         $errors = $this->validateRegistrate($_POST);
 
         if (empty($errors)) {
-            $pdo = new PDO("pgsql:host=db; port=5432; dbname=laravel", "root", "root");
 
             $firstName = $_POST['first_name'];
             $lastName = $_POST['last_name'];
@@ -24,8 +23,9 @@ class User
             $password = password_hash($_POST['password'], PASSWORD_DEFAULT);
             $repeatPassword = $_POST['repeat_password'];
 
-            $stmt = $pdo->prepare("INSERT INTO users (first_name, last_name, email, password) VALUES (:first_name, :last_name, :email, :password)");
-            $stmt->execute(['first_name' => $firstName, 'last_name' => $lastName, 'email' => $email, 'password' => $password]);
+            require_once './../Model/User.php';
+            $userModel = new User();
+            $userModel->create($firstName, $lastName, $email, $password);
         }
 
         require_once './../View/registrate.php';
@@ -62,14 +62,12 @@ class User
         if (isset($arr['email'])) {
             $email = $arr['email'];
 
-            $pdo = new PDO("pgsql:host=db; port=5432; dbname=laravel", "root", "root");
+            require_once './../Model/User.php';
+            $userModel = new User();
+            $getEmail = $userModel->getUserByEmail($email);
 
-            $stmt = $pdo->prepare("SELECT * FROM users WHERE email = :email");
-            $stmt->execute(['email' => $email]);
-            $validateEmail = $stmt->fetch();
-
-            if ($validateEmail === true) {
-                $errors['email'] =  'User with such email already exists';
+            if ($getEmail === true) {
+                $errors['email'] =  'UserController with such email already exists';
             } elseif (empty($email)) {
                 $errors['email'] =  'Email not be empty';
             } elseif (strlen($email) < 2) {
@@ -116,16 +114,14 @@ class User
         $errors = $this->validateLogin($_POST);
 
         if (empty($errors)) {
-            $pdo = new PDO("pgsql:host=db; port=5432; dbname=laravel", "root", "root");
-
             $email = $_POST['email'];
             $password = $_POST['password'];
 
-            $stmt = $pdo->prepare("SELECT * FROM users WHERE email = :email");
-            $stmt->execute(['email' => $email]);
-            $user = $stmt->fetch(PDO::FETCH_ASSOC);
+            require_once './../Model/User.php';
+            $userModel = new User();
+            $getEmail = $userModel->getUserByEmail($email);
 
-            if (!empty($user)) {
+            if (!empty($getEmail)) {
                 if (password_verify($password, $user['password'])) {
                     session_start();
                     $_SESSION['user_id'] = $user['id'];

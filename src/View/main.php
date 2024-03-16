@@ -1,7 +1,7 @@
 <?php
-require_once './../Controller/Main.php';
+require_once './../Controller/MainController.php';
 
-$obj = new Main();
+$obj = new MainController();
 $obj->userVerification();
 ?>
 

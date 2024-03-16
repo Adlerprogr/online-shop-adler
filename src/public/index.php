@@ -4,8 +4,8 @@ $uri = $_SERVER['REQUEST_URI'];
 $method = $_SERVER['REQUEST_METHOD'];
 
 if ($uri === '/registrate') {
-    require_once './../Controller/User.php';
-    $obj = new User();
+    require_once './../Controller/UserController.php';
+    $obj = new UserController();
 
     if ($method === "GET") {
         $obj->getRegistrate();
@@ -16,8 +16,8 @@ if ($uri === '/registrate') {
     }
 
 } elseif ($uri === '/login') {
-    require_once './../Controller/User.php';
-    $obj = new User();
+    require_once './../Controller/UserController.php';
+    $obj = new UserController();
 
     if ($method === "GET") {
         $obj->getLogin();
@@ -28,8 +28,8 @@ if ($uri === '/registrate') {
     }
 
 } elseif ($uri === '/main') {
-    require_once './../Controller/Main.php';
-    $obj = new Main();
+    require_once './../Controller/MainController.php';
+    $obj = new MainController();
 
     if ($method === "GET") {
         $obj->userVerification();
@@ -38,8 +38,8 @@ if ($uri === '/registrate') {
     }
 
 } elseif ($uri === '/add-product') {
-    require_once './../Controller/Product.php';
-    $obj = new Product();
+    require_once './../Controller/ProductController.php';
+    $obj = new ProductController();
 
     if ($method === "GET") {
         $obj->getAddProduct();
