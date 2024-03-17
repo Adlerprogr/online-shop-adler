@@ -2,7 +2,7 @@
 
 require_once './../Controller/UserController.php';
 require_once './../Controller/MainController.php';
-require_once './../Controller/ProductController.php';
+require_once './../Controller/UserProductController.php';
 
 $uri = $_SERVER['REQUEST_URI'];
 $method = $_SERVER['REQUEST_METHOD'];
@@ -42,8 +42,8 @@ if ($uri === '/registrate') {
     }
 
 } elseif ($uri === '/add-product') {
-//    require_once './../Controller/ProductController.php';
-    $obj = new ProductController();
+//    require_once './../Controller/UserProductController.php';
+    $obj = new UserProductController();
 
     if ($method === "GET") {
         if ($obj->userByVerification() === 'Are no products') {

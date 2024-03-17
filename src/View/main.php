@@ -56,34 +56,47 @@
 
                 <?php foreach ($products as $product): ?>
 
-                <li class="products__list-item">
+                <form>
 
-                    <a href="#x" class="products__link">
+                    <li class="products__list-item">
 
-                        <div class="product-data">
-                            <div class="product-data__price"><?php echo $product['price']; ?></div>
-                            <h3 class="product-data__name"><?php echo $product['name']; ?></h3>
-                            <h3 class="product-data__description"><?php echo $product['description']; ?></h3>
-                        </div>
+                        <a href="#x" class="products__link">
 
-                        <div class="product-data__image">
-                            <img src="https://farm5.staticflickr.com/4434/37150133290_151b164f66_o.jpg" alt="lamp image" />
-                        </div>
+                            <div class="product-data">
+                                <div class="product-data__price"><?php echo $product['price']; ?></div>
+                                <h3 class="product-data__name"><?php echo $product['name']; ?></h3>
+                                <h3 class="product-data__description"><?php echo $product['description']; ?></h3>
+                            </div>
 
-                    </a>
+                            <div class="product-data__image">
+                                <img src="https://farm5.staticflickr.com/4434/37150133290_151b164f66_o.jpg" alt="lamp image" />
+                            </div>
 
-                </li>
+                        </a>
+
+                    </li>
+<!--                    <label style="color: red">--><?php //echo $errors['product_id'] ?? ''; ?><!--</label>-->
+<!--                    <input type="text" name="product_id" placeholder="Product ID" required="required" />-->
+<!---->
+<!--                    <label style="color: red">--><?php //echo $errors['quantity'] ?? ''; ?><!--</label>-->
+<!--                    <input type="text" name="quantity" placeholder="Quantity" required="required" />-->
+
+                    <button class="glow-on-hover" type="button">ADD!</button>
+
+                </form>
+
                 <?php endforeach; ?>
+
             </ul>
 
         </div>
 
     </div>
 
-
     <section>
 
 <style>
+
     HTML {
         font-family: Montserrat, sans-serif;
         font-size: 100%;
@@ -99,6 +112,66 @@
         background-image: url(https://farm5.staticflickr.com/4249/35281380986_5cef9305f8_o.jpg);
         background-repeat: no-repeat;
         background-size: cover;
+    }
+
+    .glow-on-hover {
+        width: 80px;
+        height: 50px;
+        border: none;
+        outline: none;
+        color: #fff;
+        background: #111;
+        cursor: pointer;
+        position: relative;
+        z-index: 0;
+        border-radius: 10px;
+    }
+
+    .glow-on-hover:before {
+        content: '';
+        background: linear-gradient(45deg, #ff0000, #ff7300, #fffb00, #48ff00, #00ffd5, #002bff, #7a00ff, #ff00c8, #ff0000);
+        position: absolute;
+        top: -2px;
+        left:-2px;
+        background-size: 400%;
+        z-index: -1;
+        filter: blur(5px);
+        width: calc(100% + 4px);
+        height: calc(100% + 4px);
+        animation: glowing 20s linear infinite;
+        opacity: 0;
+        transition: opacity .3s ease-in-out;
+        border-radius: 10px;
+    }
+
+    .glow-on-hover:active {
+        color: #000
+    }
+
+    .glow-on-hover:active:after {
+        background: transparent;
+    }
+
+    .glow-on-hover:hover:before {
+        opacity: 1;
+    }
+
+    .glow-on-hover:after {
+        z-index: -1;
+        content: '';
+        position: absolute;
+        width: 100%;
+        height: 100%;
+        background: #111;
+        left: 0;
+        top: 0;
+        border-radius: 10px;
+    }
+
+    @keyframes glowing {
+        0% { background-position: 0 0; }
+        50% { background-position: 400% 0; }
+        100% { background-position: 0 0; }
     }
 
     BODY::before {
@@ -124,7 +197,7 @@
     .container {
         position: relative;
         min-width: 250px;
-        max-width: 1200px;
+        max-width: 1600px;
         min-height: 1000px;
         margin: 5em .3em 0;
     //border: 1px solid #eee;
@@ -563,6 +636,7 @@
         }
 
     }
+
 </style>
 
         <script>
@@ -729,70 +803,3 @@
             https://dribbble.com/shots/3419673-Visual-Motion-exploration
             */
         </script>
-
-        <!---->
-        <!--<div class="container">-->
-        <!--    <h3>Catalog</h3>-->
-        <!--    <div class="card-deck">-->
-        <!--        --><?php //foreach ($products as $product): ?>
-        <!--        <div class="card text-center">-->
-        <!--            <a href="#">-->
-        <!--                <div class="card-header">-->
-        <!--                    Hit!-->
-        <!--                </div>-->
-        <!--                <img class="card-img-top" src="https://images.unsplash.com/photo-1511707171634-5f897ff02aa9?ixlib=rb-0.3.5&q=80&fm=jpg&crop=entropy&cs=tinysrgb&w=400&fit=max&ixid=eyJhcHBfaWQiOjE0NTg5fQ&s=043d89cbf03cbdbbe8ed9f9e5e44ce6f" alt="Card image">-->
-        <!--                <div class="card-body">-->
-        <!--                    <p class="card-text text-muted">--><?php //echo $product['name']; ?><!--</p>-->
-        <!--                    <a href="#"><h5 class="card-title">--><?php //echo $product['description']; ?><!--</h5></a>-->
-        <!--                    <div class="card-footer">-->
-        <!--                        --><?php //echo $product['price']; ?>
-        <!--                    </div>-->
-        <!--                </div>-->
-        <!--            </a>-->
-        <!--        </div>-->
-        <!--        --><?php //endforeach; ?>
-        <!--    </div>-->
-        <!--</div>-->
-        <!---->
-        <!--<style>-->
-        <!--    body {-->
-        <!--        font-style: sans-serif;-->
-        <!--    }-->
-        <!---->
-        <!--    a {-->
-        <!--        text-decoration: none;-->
-        <!--    }-->
-        <!---->
-        <!--    a:hover {-->
-        <!--        text-decoration: none;-->
-        <!--    }-->
-        <!---->
-        <!--    h3 {-->
-        <!--        line-height: 3em;-->
-        <!--    }-->
-        <!---->
-        <!--    .card {-->
-        <!--        max-width: 16rem;-->
-        <!--    }-->
-        <!---->
-        <!--    .card:hover {-->
-        <!--        box-shadow: 1px 2px 10px lightgray;-->
-        <!--        transition: 0.2s;-->
-        <!--    }-->
-        <!---->
-        <!--    .card-header {-->
-        <!--        font-size: 13px;-->
-        <!--        color: gray;-->
-        <!--        background-color: white;-->
-        <!--    }-->
-        <!---->
-        <!--    .text-muted {-->
-        <!--        font-size: 11px;-->
-        <!--    }-->
-        <!---->
-        <!--    .card-footer{-->
-        <!--        font-weight: bold;-->
-        <!--        font-size: 18px;-->
-        <!--        background-color: white;-->
-        <!--    }-->
-        <!--</style>-->

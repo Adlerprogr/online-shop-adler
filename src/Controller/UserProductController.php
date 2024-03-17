@@ -2,7 +2,7 @@
 
 require_once './../Model/Product.php';
 
-class ProductController
+class UserProductController
 {
     private Product $modelProduct;
 
