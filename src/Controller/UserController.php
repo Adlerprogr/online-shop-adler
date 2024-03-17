@@ -1,15 +1,24 @@
 <?php
 
+require_once './../Model/User.php';
+
 class UserController
 {
+    private User $modelUser;
+
+    public function __construct()
+    {
+        $this->modelUser = new User();
+    }
+
     public function registForm():void
     {
         require_once './../View/registrate.php';
     }
 
-    public function registrate():void
+    public function registrate(array $arr):void
     {
-        $errors = $this->validateRegistrate($_POST);
+        $errors = $this->validateRegistrate($arr);
 
         if (empty($errors)) {
             $firstName = $_POST['first_name'];
@@ -18,9 +27,10 @@ class UserController
             $password = password_hash($_POST['password'], PASSWORD_DEFAULT);
             $repeatPassword = $_POST['repeat_password'];
 
-            require_once './../Model/User.php';
-            $userModel = new User();
-            $userModel->create($firstName, $lastName, $email, $password);
+//            require_once './../Model/User.php';
+//            $userModel = new User();
+//            $userModel->create($firstName, $lastName, $email, $password);
+            $this->modelUser->create($firstName, $lastName, $email, $password);
         }
 
         require_once './../View/registrate.php';
@@ -57,9 +67,10 @@ class UserController
         if (isset($arr['email'])) {
             $email = $arr['email'];
 
-            require_once './../Model/User.php';
-            $userModel = new User();
-            $getEmail = $userModel->getUserByEmail($email);
+//            require_once './../Model/User.php';
+//            $userModel = new User();
+//            $getEmail = $userModel->getUserByEmail($email);
+            $getEmail = $this->modelUser->getUserByEmail($email);
 
             if ($getEmail === true) {
                 $errors['email'] =  'UserController with such email already exists';
@@ -104,18 +115,20 @@ class UserController
         require_once './../View/login.php';
     }
 
-    public function systemLogin():void
+    public function systemLogin(array $arr):void
     {
-        $errors = $this->validateLogin($_POST);
+        $errors = $this->validateLogin($arr);
 
         if (empty($errors)) {
             $email = $_POST['email'];
             $password = $_POST['password'];
 
-            require_once './../Model/User.php';
-            $userModel = new User();
-            $getEmail = $userModel->getUserByEmail($email);
-            $getUser = $userModel->getUser($email);
+//            require_once './../Model/User.php';
+//            $userModel = new User();
+//            $getEmail = $userModel->getUserByEmail($email);
+//            $getUser = $userModel->getUser($email);
+            $getEmail = $this->modelUser->getUserByEmail($email);
+            $getUser = $this->modelUser->getUser($email);
 
             if (!empty($getEmail)) {
                 if (password_verify($password, $getUser['password'])) {

@@ -1,15 +1,24 @@
 <?php
 
+require_once './../Model/Product.php';
+
 class ProductController
 {
+    private Product $modelProduct;
+
+    public function __construct()
+    {
+        $this->modelProduct = new Product();
+    }
+
     public function pathToAdding():void
     {
         require_once './../View/add_product.php';
     }
 
-    public function addUsersProduct():void
+    public function addUsersProduct(array $arr):void
     {
-        $errors = $this->validateUserProduct($_POST);
+        $errors = $this->validateUserProduct($arr);
 
         if (empty($errors)) {
             session_start();
@@ -21,14 +30,17 @@ class ProductController
             $product_id = $_POST['product_id'];
             $quantity = $_POST['quantity'];
 
-            require_once './../Model/Product.php';
-            $productModel = new Product();
-            $check = $productModel->checkProduct($user_id, $product_id);
+//            require_once './../Model/Product.php';
+//            $productModel = new Product();
+//            $check = $productModel->checkProduct($user_id, $product_id);
+            $check = $this->modelProduct->checkProduct($user_id, $product_id);
 
             if (empty($check)) {
-                $productModel->create($user_id, $product_id, $quantity);
+//                $productModel->create($user_id, $product_id, $quantity);
+                $this->modelProduct->create($user_id, $product_id, $quantity);
             } else {
-                $productModel->updateQuantity($user_id, $product_id, $quantity);
+//                $productModel->updateQuantity($user_id, $product_id, $quantity);
+                $this->modelProduct->updateQuantity($user_id, $product_id, $quantity);
             }
         }
 
@@ -42,9 +54,10 @@ class ProductController
         if (isset($arr['user_id'])) {
             $user_id = $arr['user_id'];
 
-            require_once './../Model/Product.php';
-            $productUser = new Product();
-            $getUser = $productUser->getUserById($user_id);
+//            require_once './../Model/Product.php';
+//            $productUser = new Product();
+//            $getUser = $productUser->getUserById($user_id);
+            $getUser = $this->modelProduct->getUserById($user_id);
 
             if (empty($user_id)) {
                 $errors['user_id'] = 'The user id should not be empty';
@@ -60,7 +73,8 @@ class ProductController
 
 //            require_once './../Model/Product.php';
 //            $productUser = new Product();
-            $getProduct = $productUser->getProductById($product_id);
+//            $getProduct = $productUser->getProductById($product_id);
+            $getProduct = $this->modelProduct->getProductById($product_id);
 
             if (empty($product_id)) {
                 $errors['product_id'] = 'The product id should not be empty';
@@ -86,23 +100,24 @@ class ProductController
         return $errors;
     }
 
-    public function userVerification()
+    public function userByVerification()
     {
         if (session_status() == PHP_SESSION_NONE) {
             session_start();
             if (!isset($_SESSION['user_id'])) {
                 header("Location: /login");
+            } else {
+//                require_once './../Model/Product.php';
+//                $productModel = new Product();
+//                $products = $productModel->getProduct();
+                $products = $this->modelProduct->getProduct();
+
+                if (empty($products)) {
+                    return 'Are no products';
+                } else {
+                    require_once './../View/add_product.php';
+                }
             }
-        }
-
-        require_once './../Model/Product.php';
-        $productModel = new Product();
-        $products = $productModel->getProduct();
-
-        if (empty($products)) {
-            return 'Are no products';
-        } else {
-            require_once './../View/add_product.php';
         }
     }
 }
