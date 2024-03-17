@@ -1,7 +1,16 @@
 <?php
 
+require_once './../Model/Product.php';
+
 class MainController
 {
+    private Product $modelProduct;
+
+    public function __construct()
+    {
+        $this->modelProduct = new Product();
+    }
+
     public function pathToPage():void
     {
         require_once './../View/main.php';
@@ -20,9 +29,7 @@ class MainController
             }
         }
 
-        require_once './../Model/Product.php';
-        $mainModel = new Product();
-        $products = $mainModel->getProduct();
+        $products = $this->modelProduct->getProduct();
 
         if (empty($products)) {
             return 'Are no products';

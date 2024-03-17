@@ -27,9 +27,6 @@ class UserController
             $password = password_hash($_POST['password'], PASSWORD_DEFAULT);
             $repeatPassword = $_POST['repeat_password'];
 
-//            require_once './../Model/User.php';
-//            $userModel = new User();
-//            $userModel->create($firstName, $lastName, $email, $password);
             $this->modelUser->create($firstName, $lastName, $email, $password);
         }
 
@@ -67,9 +64,6 @@ class UserController
         if (isset($arr['email'])) {
             $email = $arr['email'];
 
-//            require_once './../Model/User.php';
-//            $userModel = new User();
-//            $getEmail = $userModel->getUserByEmail($email);
             $getEmail = $this->modelUser->getUserByEmail($email);
 
             if ($getEmail === true) {
@@ -104,7 +98,7 @@ class UserController
                 $errors['repeat_password'] =  'Repeat password not match';
             }
         } else {
-            $errors['repeat_password'] =  'Repeat passwordmust be fill';
+            $errors['repeat_password'] =  'Repeat password must be fill';
         }
 
         return $errors;
@@ -123,10 +117,6 @@ class UserController
             $email = $_POST['email'];
             $password = $_POST['password'];
 
-//            require_once './../Model/User.php';
-//            $userModel = new User();
-//            $getEmail = $userModel->getUserByEmail($email);
-//            $getUser = $userModel->getUser($email);
             $getEmail = $this->modelUser->getUserByEmail($email);
             $getUser = $this->modelUser->getUser($email);
 

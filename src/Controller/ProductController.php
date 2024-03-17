@@ -30,16 +30,11 @@ class ProductController
             $product_id = $_POST['product_id'];
             $quantity = $_POST['quantity'];
 
-//            require_once './../Model/Product.php';
-//            $productModel = new Product();
-//            $check = $productModel->checkProduct($user_id, $product_id);
             $check = $this->modelProduct->checkProduct($user_id, $product_id);
 
             if (empty($check)) {
-//                $productModel->create($user_id, $product_id, $quantity);
                 $this->modelProduct->create($user_id, $product_id, $quantity);
             } else {
-//                $productModel->updateQuantity($user_id, $product_id, $quantity);
                 $this->modelProduct->updateQuantity($user_id, $product_id, $quantity);
             }
         }
@@ -54,9 +49,6 @@ class ProductController
         if (isset($arr['user_id'])) {
             $user_id = $arr['user_id'];
 
-//            require_once './../Model/Product.php';
-//            $productUser = new Product();
-//            $getUser = $productUser->getUserById($user_id);
             $getUser = $this->modelProduct->getUserById($user_id);
 
             if (empty($user_id)) {
@@ -71,9 +63,6 @@ class ProductController
         if (isset($arr['product_id'])) {
             $product_id = $arr['product_id'];
 
-//            require_once './../Model/Product.php';
-//            $productUser = new Product();
-//            $getProduct = $productUser->getProductById($product_id);
             $getProduct = $this->modelProduct->getProductById($product_id);
 
             if (empty($product_id)) {
@@ -107,9 +96,6 @@ class ProductController
             if (!isset($_SESSION['user_id'])) {
                 header("Location: /login");
             } else {
-//                require_once './../Model/Product.php';
-//                $productModel = new Product();
-//                $products = $productModel->getProduct();
                 $products = $this->modelProduct->getProduct();
 
                 if (empty($products)) {
