@@ -21,13 +21,13 @@ class UserController
         $errors = $this->validateRegistrate($arr);
 
         if (empty($errors)) {
-            $firstName = $_POST['first_name'];
-            $lastName = $_POST['last_name'];
-            $email = $_POST['email'];
-            $password = password_hash($_POST['password'], PASSWORD_DEFAULT);
-            $repeatPassword = $_POST['repeat_password'];
+            $firstName = $arr['first_name'];
+            $lastName = $arr['last_name'];
+            $email = $arr['email'];
+            $password = password_hash($arr['password'], PASSWORD_DEFAULT);
+            $repeatPassword = password_hash($arr['repeat_password'], PASSWORD_DEFAULT);
 
-            $this->modelUser->create($firstName, $lastName, $email, $password);
+            $this->modelUser->create($firstName, $lastName, $email, $password, $repeatPassword);
         }
 
         require_once './../View/registrate.php';
