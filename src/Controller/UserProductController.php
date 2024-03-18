@@ -27,8 +27,8 @@ class UserProductController
             }
 
             $user_id = $_SESSION['user_id'];
-            $product_id = $_POST['product_id'];
-            $quantity = $_POST['quantity'];
+            $product_id = $arr['product_id'];
+            $quantity = $arr['quantity'];
 
             $check = $this->modelProduct->checkProduct($user_id, $product_id);
 

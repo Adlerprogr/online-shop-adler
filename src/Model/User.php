@@ -16,19 +16,8 @@ class User
 
         $stmt = $pdo->prepare("SELECT * FROM users WHERE email = :email");
         $stmt->execute(['email' => $email]);
-        $getEmail = $stmt->fetch();
+        $user = $stmt->fetch();
 
-        return $getEmail;
-    }
-
-    public function getUser(string $email)
-    {
-        $pdo = new PDO("pgsql:host=db; port=5432; dbname=laravel", "root", "root");
-
-        $stmt = $pdo->prepare("SELECT * FROM users WHERE email = :email");
-        $stmt->execute(['email' => $email]);
-        $user = $stmt->fetch(PDO::FETCH_ASSOC);
-
-        return $user;
+        return $user;;
     }
 }

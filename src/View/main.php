@@ -56,7 +56,7 @@
 
                 <?php foreach ($products as $product): ?>
 
-                <form>
+                <form name="form_main_page" method="post" action="/add-product" autocomplete="off">
 
                     <li class="products__list-item">
 
@@ -72,16 +72,20 @@
                                 <img src="https://farm5.staticflickr.com/4434/37150133290_151b164f66_o.jpg" alt="lamp image" />
                             </div>
 
+<!--                            <label style="color: red">--><?php //echo $errors['user_id'] ?? ''; ?><!--</label>-->
+<!--                            <input type="hidden" name="user_id" placeholder="User ID" required="required" />-->
+
+                            <label style="color: red"><?php echo $errors['product_id'] ?? ''; ?></label>
+                            <input type="hidden" name="product_id" placeholder="Product ID" required="required" />
+
+                            <label style="color: red"><?php echo $errors['quantity'] ?? ''; ?></label>
+                            <input type="text" name="quantity" placeholder="Quantity" required="required" />
+
+                            <button class="glow-on-hover" type="submit">ADD!</button>
+
                         </a>
 
                     </li>
-<!--                    <label style="color: red">--><?php //echo $errors['product_id'] ?? ''; ?><!--</label>-->
-<!--                    <input type="text" name="product_id" placeholder="Product ID" required="required" />-->
-<!---->
-<!--                    <label style="color: red">--><?php //echo $errors['quantity'] ?? ''; ?><!--</label>-->
-<!--                    <input type="text" name="quantity" placeholder="Quantity" required="required" />-->
-
-                    <button class="glow-on-hover" type="button">ADD!</button>
 
                 </form>
 
@@ -197,7 +201,7 @@
     .container {
         position: relative;
         min-width: 250px;
-        max-width: 1600px;
+        max-width: 1500px;
         min-height: 1000px;
         margin: 5em .3em 0;
     //border: 1px solid #eee;
@@ -741,11 +745,11 @@
                 };
 
                 //// Products Link (on products main page)
-                function productsLinkOnClick(e) {
-                    /// here we can intercept the link's id and fetch product's data from the server
-
-                    productsList.classList.remove(PRODUCTS_LIST_ACTIVE_CLASS);
-                };
+                // function productsLinkOnClick(e) {
+                //     /// here we can intercept the link's id and fetch product's data from the server
+                //
+                //     productsList.classList.remove(PRODUCTS_LIST_ACTIVE_CLASS);
+                // };
 
 
                 function productsListOnTransitionEnd(e) {
@@ -802,4 +806,5 @@
             Inspired by:
             https://dribbble.com/shots/3419673-Visual-Motion-exploration
             */
+
         </script>

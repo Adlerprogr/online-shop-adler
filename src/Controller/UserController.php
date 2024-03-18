@@ -118,12 +118,11 @@ class UserController
             $password = $_POST['password'];
 
             $getEmail = $this->modelUser->getUserByEmail($email);
-            $getUser = $this->modelUser->getUser($email);
 
             if (!empty($getEmail)) {
-                if (password_verify($password, $getUser['password'])) {
+                if (password_verify($password, $getEmail['password'])) {
                     session_start();
-                    $_SESSION['user_id'] = $getUser['id'];
+                    $_SESSION['user_id'] = $getEmail['id'];
                     header("Location: /main");
                 } else {
                     echo 'The email or password is not correct';
