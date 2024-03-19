@@ -1,5 +1,3 @@
-hello world 19.03.24
-
 <?php
 
 class MainController
