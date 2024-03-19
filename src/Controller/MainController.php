@@ -1,8 +1,6 @@
-Hello World pic
+hello world 19.03.24
 
 <?php
-
-require_once './../Model/Product.php';
 
 class MainController
 {
@@ -13,7 +11,7 @@ class MainController
         $this->modelProduct = new Product();
     }
 
-    public function pathToPage():void
+    public function pathToPage()
     {
         require_once './../View/main.php';
     }
@@ -34,61 +32,52 @@ class MainController
         $products = $this->modelProduct->getProduct();
 
         if (empty($products)) {
-            return 'Are no products';
+            echo 'Are no products';
         } else {
             require_once './../View/main.php';
         }
     }
-/////
-//    public function addProduct(array $arr)
-//    {
-//        if (!isset($_SESSION['user_id'])) {
-//            header("Location: /login");
-//        } else {
-//            $user_id = $_SESSION['user_id'];
-//            $product_id = $arr['product_id'];
-//            $quantity = $arr['quantity'];
-//
-//            $errors = $this->validateUserProduct($product_id, $quantity);
-//
-//            if(empty($errors)) {
-//
-//            } else {
-//
-//            }
-//        }
-//    }
 
-//    private function validateUserProduct(array $arr): array
-//    {
-//        $errors = [];
-//
-//        if (isset($arr['product_id'])) {
-//            $product_id = $arr['product_id'];
-//
-//            $getProduct = $this->modelProduct->getProductById($product_id);
-//
-//            if (empty($product_id)) {
-//                $errors['product_id'] = 'The product id should not be empty';
-//            } elseif ($getProduct === false) {
-//                $errors['product_id'] = 'There is no such product';
-//            }
-//        } else {
-//            $errors['product_id'] = 'The product id must be filled';
-//        }
-//
-//        if (isset($arr['quantity'])) {
-//            $quantity = $arr['quantity'];
-//
-//            if (empty($quantity)) {
-//                $errors['quantity'] = 'The quantity should not be empty';
-//            } elseif ($quantity <= 0) {
-//                $errors['quantity'] = 'The number must be greater than 0';
-//            }
-//        } else {
-//            $errors['quantity'] = 'The quantity must be filled';
-//        }
-//
-//        return $errors;
-//    }
+    public function addProduct(array $arr)
+    {
+        session_start();
+        if (!isset($_SESSION['user_id'])) {
+            header("Location: /login");
+        }
+
+        $user_id = $_SESSION['user_id'];
+        $product_id = $arr['product_id'];
+        $quantity = $arr['quantity'];
+
+        $errors = $this->validateMain($product_id, $quantity);
+
+        $check = $this->modelProduct->checkProduct($user_id, $product_id);
+
+        if (!empty($this->modelProduct->getProduct())) {
+            if (empty($errors)) {
+                if (empty($check)) {
+                    $this->modelProduct->create($user_id, $product_id, $quantity);
+                } else {
+                    $this->modelProduct->updateQuantity($user_id, $product_id, $quantity);
+                }
+
+                header("Location: /main");
+            } else {
+                echo 'Specify another quantity greater than 0';
+            }
+        } else {
+            echo 'There are no products';
+        }
+    }
+
+    private function validateMain($product_id, $quantity)
+    {
+        $errors = [];
+
+        if ($quantity <= 0) {
+            $errors['quantity'] = 'Specify another quantity greater than 0';
+        }
+
+        return $errors;
+    }
 }

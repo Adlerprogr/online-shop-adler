@@ -1,14 +1,40 @@
 <?php
 
-require_once './../Controller/UserController.php';
-require_once './../Controller/MainController.php';
-require_once './../Controller/UserProductController.php';
+//require_once './../Controller/UserController.php';
+//require_once './../Controller/MainController.php';
+//require_once './../Controller/UserProductController.php';
+
+$autoloadController = function (string $className)
+{
+    $path = "./../Controller/$className.php";
+    if (file_exists($path)) {
+        require_once $path;
+
+        return true;
+    }
+
+    return false;
+};
+
+$autoloadModel = function (string $className)
+{
+    $path = "./../Model/$className.php";
+    if (file_exists($path)) {
+        require_once $path;
+
+        return true;
+    }
+
+    return false;
+};
+
+spl_autoload_register($autoloadController);
+spl_autoload_register($autoloadModel);
 
 $uri = $_SERVER['REQUEST_URI'];
 $method = $_SERVER['REQUEST_METHOD'];
 
 if ($uri === '/registrate') {
-//    require_once './../Controller/UserController.php';
     $obj = new UserController();
 
     if ($method === "GET") {
@@ -18,9 +44,7 @@ if ($uri === '/registrate') {
     } else {
         echo "$method is not supported for $uri";
     }
-
 } elseif ($uri === '/login') {
-//    require_once './../Controller/UserController.php';
     $obj = new UserController();
 
     if ($method === "GET") {
@@ -30,19 +54,17 @@ if ($uri === '/registrate') {
     } else {
         echo "$method is not supported for $uri";
     }
-
 } elseif ($uri === '/main') {
-//    require_once './../Controller/MainController.php';
     $obj = new MainController();
 
     if ($method === "GET") {
         $obj->userVerification();
+    } elseif ($method === "POST") {
+        $obj->addProduct($_POST);
     } else {
         echo "$method is not supported for $uri";
     }
-
 } elseif ($uri === '/add-product') {
-//    require_once './../Controller/UserProductController.php';
     $obj = new UserProductController();
 
     if ($method === "GET") {

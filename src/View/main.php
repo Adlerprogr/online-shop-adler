@@ -56,7 +56,7 @@
 
                 <?php foreach ($products as $product): ?>
 
-                <form name="form_main_page" method="post" action="/add-product" autocomplete="off">
+                <form name="form_main_page" method="post" action="/main" autocomplete="off">
 
                     <li class="products__list-item">
 
@@ -69,14 +69,12 @@
                             </div>
 
                             <div class="product-data__image">
-                                <img src="https://farm5.staticflickr.com/4434/37150133290_151b164f66_o.jpg" alt="lamp image" />
+                                <img src="<?php echo $product['img_url']; ?>" alt="lamp image" />
                             </div>
 
-<!--                            <label style="color: red">--><?php //echo $errors['user_id'] ?? ''; ?><!--</label>-->
-<!--                            <input type="hidden" name="user_id" placeholder="User ID" required="required" />-->
-
+<!--                            <input type="hidden" name="user_id" placeholder="User ID" required="required" value="--><?php //echo $_SESSION['user_id']; ?><!--" />-->
                             <label style="color: red"><?php echo $errors['product_id'] ?? ''; ?></label>
-                            <input type="hidden" name="product_id" placeholder="Product ID" required="required" />
+                            <input type="hidden" name="product_id" placeholder="Product ID" required="required" value="<?php echo $product['id']; ?>" />
 
                             <label style="color: red"><?php echo $errors['quantity'] ?? ''; ?></label>
                             <input type="text" name="quantity" placeholder="Quantity" required="required" />

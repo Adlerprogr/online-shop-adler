@@ -1,7 +1,5 @@
 <?php
 
-require_once './../Model/Product.php';
-
 class UserProductController
 {
     private Product $modelProduct;
