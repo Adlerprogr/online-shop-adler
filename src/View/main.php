@@ -47,6 +47,10 @@
                 <span class="products__main-category">Products</span>
                 <span class="title-divider">|</span>
                 <span class="products__sub-category">Clothes</span>
+                <span class="title-divider">|</span>
+                <form name="Basket" method="post" action="/basket" autocomplete="off">
+                    <button class="glow-on-hover" type="submit">Basket</button>
+                </form>
             </h2>
         </div>
 

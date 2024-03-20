@@ -51,4 +51,13 @@ class Product extends Model
 
         return $products;
     }
+
+    public function productBasket(int $user_id)
+    {
+        $stmt = $this->pdo->prepare("SELECT * FROM user_products WHERE user_id = :user_id");
+        $stmt->execute(['user_id' => $user_id]);
+        $productsUser = $stmt->fetchAll();
+
+        return $productsUser;
+    }
 }
