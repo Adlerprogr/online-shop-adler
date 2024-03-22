@@ -16,4 +16,13 @@ class User extends Model
 
         return $user;
     }
+
+    public function getUserById(int $user_id)
+    {
+        $stmt = $this->pdo->prepare("SELECT * FROM users WHERE id = :id");
+        $stmt->execute(['id' => $user_id]);
+        $getUser = $stmt->fetch();
+
+        return $getUser;
+    }
 }

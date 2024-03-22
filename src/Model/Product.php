@@ -2,22 +2,12 @@
 
 class Product extends Model
 {
-    public function create(int $user_id, int $product_id, int $quantity)
+    public function getProduct()
     {
-        $stmt = $this->pdo->prepare("INSERT INTO user_products (user_id, product_id, quantity) VALUES (:user_id, :product_id, :quantity)");
-        $stmt->execute(['user_id' => $user_id, 'product_id' => $product_id, 'quantity' => $quantity]);
-        $result = $stmt->fetch();
+        $stmt = $this->pdo->query("SELECT * FROM products");
+        $products = $stmt->fetchAll();
 
-        return $result;
-    }
-
-    public function getUserById(int $user_id)
-    {
-        $stmt = $this->pdo->prepare("SELECT * FROM users WHERE id = :id");
-        $stmt->execute(['id' => $user_id]);
-        $getUser = $stmt->fetch();
-
-        return $getUser;
+        return $products;
     }
 
     public function getProductById(int $product_id)
@@ -27,6 +17,15 @@ class Product extends Model
         $getProduct = $stmt->fetch();
 
         return $getProduct;
+    }
+
+    public function create(int $user_id, int $product_id, int $quantity)
+    {
+        $stmt = $this->pdo->prepare("INSERT INTO user_products (user_id, product_id, quantity) VALUES (:user_id, :product_id, :quantity)");
+        $stmt->execute(['user_id' => $user_id, 'product_id' => $product_id, 'quantity' => $quantity]);
+        $result = $stmt->fetch();
+
+        return $result;
     }
 
     public function updateQuantity(int $user_id, int $product_id, int $quantity):void
@@ -44,15 +43,7 @@ class Product extends Model
         return $resultCheck;
     }
 
-    public function getProduct()
-    {
-        $stmt = $this->pdo->query("SELECT * FROM products");
-        $products = $stmt->fetchAll();
-
-        return $products;
-    }
-
-    public function productBasket(int $user_id)
+    public function allProductsByUserId(int $user_id)
     {
         $stmt = $this->pdo->prepare("SELECT * FROM user_products WHERE user_id = :user_id");
         $stmt->execute(['user_id' => $user_id]);

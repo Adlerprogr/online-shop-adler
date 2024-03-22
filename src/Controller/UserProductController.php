@@ -3,10 +3,12 @@
 class UserProductController
 {
     private Product $modelProduct;
+    private User $modelUser;
 
     public function __construct()
     {
         $this->modelProduct = new Product();
+        $this->modelUser = new User();
     }
 
     public function pathToAdding():void
@@ -47,7 +49,7 @@ class UserProductController
         if (isset($arr['user_id'])) {
             $user_id = $arr['user_id'];
 
-            $getUser = $this->modelProduct->getUserById($user_id);
+            $getUser = $this->modelUser->getUserById($user_id);
 
             if (empty($user_id)) {
                 $errors['user_id'] = 'The user id should not be empty';

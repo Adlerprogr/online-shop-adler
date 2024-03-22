@@ -29,12 +29,23 @@ class BasketController
 
         $user_id = $_SESSION['user_id'];
 
-        $products = $this->modelProduct->productBasket($user_id);
+        $productsUser = $this->modelProduct->allProductsByUserId($user_id);
+        $products = $this->modelProduct->getProduct();
 
-        if (empty($products)) {
-            echo 'Are no products';
-        } else {
-            require_once './../View/basket.php';
+        foreach ($productsUser as $productUser) {
+            $productbasket = [];
+            foreach ($products as $product) {
+                if ($product['id'] === $productUser['product_id']) {
+                    $productbasket['name'] = $product['name'];
+                    $productbasket['description'] = $product['description'];
+                    $productbasket['price'] = $product['price'];
+                    $productbasket['img_url'] = $product['img_url'];
+                    $productbasket['quantity'] = $productUser['quantity'];
+                }
+            }
+            $basket = [$productbasket];
         }
+
+        require_once './../View/basket.php';
     }
 }

@@ -56,8 +56,6 @@ class App
 
             if ($method === "GET") {
                 $obj->getCart();
-            } else {
-                echo "$method is not supported for $uri";
             }
         } else {
             require_once './../View/404.html';
