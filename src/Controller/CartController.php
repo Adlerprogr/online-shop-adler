@@ -1,17 +1,19 @@
 <?php
 
-class BasketController
+class CartController
 {
     private Product $modelProduct;
+    private UserProduct $modelUserProduct;
 
     public function __construct()
     {
         $this->modelProduct = new Product();
+        $this->modelUserProduct = new UserProduct();
     }
 
     public function pathToPage()
     {
-        require_once './../View/basket.php';
+        require_once './../View/cart.php';
     }
 
     public function getCart()
@@ -27,14 +29,21 @@ class BasketController
             }
         }
 
-        $user_id = $_SESSION['user_id'];
+        $cartUser = $this->modelUserProduct->productsUserCart();
 
+        if (empty($cartUser)) {
+            echo 'The basket is empty';
+        } else {
+            require_once './../View/cart.php';
+        }
+
+/*
         $productsUser = $this->modelProduct->allProductsByUserId($user_id);
         $products = $this->modelProduct->getProduct();
 
-        foreach ($productsUser as $productUser) {
+        foreach ($productsUser as $key => $productUser) {
             $productbasket = [];
-            foreach ($products as $product) {
+            foreach ($products as $jey => $product) {
                 if ($product['id'] === $productUser['product_id']) {
                     $productbasket['name'] = $product['name'];
                     $productbasket['description'] = $product['description'];
@@ -43,9 +52,10 @@ class BasketController
                     $productbasket['quantity'] = $productUser['quantity'];
                 }
             }
-            $basket = [$productbasket];
         }
+        $basket = [$productbasket];
 
-        require_once './../View/basket.php';
+        require_once './../View/cart.php';
+*/
     }
 }

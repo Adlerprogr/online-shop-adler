@@ -19,14 +19,14 @@
     <div class="row justify-content-center">
         <div class="col-12">
             <div class="section-title text-center mb-4 pb-2">
-                <h4 class="title mb-4">Basket</h4>
+                <h3 class="title mb-4">Basket</h3>
                 <p class="text-muted para-desc mx-auto mb-0">▂ ▃ ▄ ▅ ▆ ▇ █ █ ▇ ▆ ▅ ▄ ▃ ▂▂ ▃ ▄ ▅ ▆ ▇ █ █ ▇ ▆ ▅ ▄ ▃ ▂▂ ▃ ▄ ▅ ▆ ▇ █ █ ▇ ▆ ▅ ▄ ▃ ▂▂ ▃ ▄ ▅ ▆ ▇ █ █ ▇ ▆ ▅ ▄ ▃ ▂</p>
             </div>
         </div><!--end col-->
     </div><!--end row-->
 
-    <?php foreach ($basket as $product): ?>
     <div class="row">
+        <?php foreach ($cartUser as $product): ?>
         <div class="col-md-3 col-sm-6">
             <div class="product-grid">
                 <div class="product-image">
@@ -39,11 +39,12 @@
                     <h3 class="title"><a href="#"><?php echo $product['name']; ?></a></h3>
                     <h2 class="title"><a href="#"><?php echo $product['description']; ?></a></h2>
                     <div class="price"><?php echo $product['price']; ?>р</div>
+                    <div class="price"><?php echo $product['quantity']; ?>шт</div>
                 </div>
             </div>
         </div>
+        <?php endforeach; ?>
     </div>
-    <?php endforeach; ?>
 
 </div>
 </body>

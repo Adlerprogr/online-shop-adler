@@ -3,10 +3,12 @@
 class MainController
 {
     private Product $modelProduct;
+    private UserProduct $modelUserProduct;
 
     public function __construct()
     {
         $this->modelProduct = new Product();
+        $this->modelUserProduct = new UserProduct();
     }
 
     public function pathToPage()
@@ -14,7 +16,7 @@ class MainController
         require_once './../View/main.php';
     }
 
-    public function userVerification()
+    public function mainPage()
     {
         if (session_status() == PHP_SESSION_NONE) {
             session_start();
@@ -27,7 +29,7 @@ class MainController
             }
         }
 
-        $products = $this->modelProduct->getProduct();
+        $products = $this->modelProduct->getProducts();
 
         if (empty($products)) {
             echo 'Are no products';
@@ -36,27 +38,27 @@ class MainController
         }
     }
 
-    public function addProduct(array $arr)
+    public function addProductCart(array $arr)
     {
         session_start();
         if (!isset($_SESSION['user_id'])) {
             header("Location: /login");
         }
 
-        $user_id = $_SESSION['user_id'];
-        $product_id = $arr['product_id'];
+        $userId = $_SESSION['user_id'];
+        $productId = $arr['product_id'];
         $quantity = $arr['quantity'];
 
-        $errors = $this->validateMain($product_id, $quantity);
+        $errors = $this->validateMain($productId, $quantity);
 
-        $check = $this->modelProduct->checkProduct($user_id, $product_id);
+        $check = $this->modelUserProduct->checkProduct($userId, $productId);
 
-        if (!empty($this->modelProduct->getProduct())) {
+        if (!empty($this->modelProduct->getProducts())) {
             if (empty($errors)) {
                 if (empty($check)) {
-                    $this->modelProduct->create($user_id, $product_id, $quantity);
+                    $this->modelUserProduct->create($userId, $productId, $quantity);
                 } else {
-                    $this->modelProduct->updateQuantity($user_id, $product_id, $quantity);
+                    $this->modelUserProduct->updateQuantity($userId, $productId, $quantity);
                 }
 
                 header("Location: /main");
@@ -68,7 +70,7 @@ class MainController
         }
     }
 
-    private function validateMain($product_id, $quantity)
+    private function validateMain($productId, $quantity) // Нужно додбавить проверки и изменить название
     {
         $errors = [];
 

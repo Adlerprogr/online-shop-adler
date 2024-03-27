@@ -4,11 +4,14 @@ class UserProductController
 {
     private Product $modelProduct;
     private User $modelUser;
+    private UserProduct $modelUserProduct;
 
     public function __construct()
     {
         $this->modelProduct = new Product();
         $this->modelUser = new User();
+        $this->modelUserProduct = new UserProduct();
+
     }
 
     public function pathToAdding():void
@@ -26,16 +29,16 @@ class UserProductController
                 header("Location: /login");
             }
 
-            $user_id = $_SESSION['user_id'];
-            $product_id = $arr['product_id'];
+            $userId = $_SESSION['user_id'];
+            $productId = $arr['product_id'];
             $quantity = $arr['quantity'];
 
-            $check = $this->modelProduct->checkProduct($user_id, $product_id);
+            $check = $this->modelUserProduct->checkProduct($userId, $productId);
 
             if (empty($check)) {
-                $this->modelProduct->create($user_id, $product_id, $quantity);
+                $this->modelUserProduct->create($userId, $productId, $quantity);
             } else {
-                $this->modelProduct->updateQuantity($user_id, $product_id, $quantity);
+                $this->modelUserProduct->updateQuantity($userId, $productId, $quantity);
             }
         }
 
@@ -46,26 +49,26 @@ class UserProductController
     {
         $errors = [];
 
-        if (isset($arr['user_id'])) {
-            $user_id = $arr['user_id'];
+        if (isset($_SESSION['user_id'])) {
+            $userId = $_SESSION['user_id'];
 
-            $getUser = $this->modelUser->getUserById($user_id);
+            $getUser = $this->modelUser->getUserById($userId);
 
-            if (empty($user_id)) {
+            if (empty($userId)) {
                 $errors['user_id'] = 'The user id should not be empty';
             } elseif ($getUser === false) {
                 $errors['user_id'] = 'Such a user is not registered';
             }
         } else {
-            $errors['user_id'] = 'UserController id must be filled';
+            $errors['user_id'] = 'User id must be filled';
         }
 
         if (isset($arr['product_id'])) {
-            $product_id = $arr['product_id'];
+            $productId = $arr['product_id'];
 
-            $getProduct = $this->modelProduct->getProductById($product_id);
+            $getProduct = $this->modelProduct->getProductById($productId);
 
-            if (empty($product_id)) {
+            if (empty($productId)) {
                 $errors['product_id'] = 'The product id should not be empty';
             } elseif ($getProduct === false) {
                 $errors['product_id'] = 'There is no such product';
@@ -96,7 +99,7 @@ class UserProductController
             if (!isset($_SESSION['user_id'])) {
                 header("Location: /login");
             } else {
-                $products = $this->modelProduct->getProduct();
+                $products = $this->modelProduct->getProducts();
 
                 if (empty($products)) {
                     return 'Are no products';

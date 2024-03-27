@@ -31,9 +31,9 @@ class App
             $obj = new MainController();
 
             if ($method === "GET") {
-                $obj->userVerification();
+                $obj->mainPage();
             } elseif ($method === "POST") {
-                $obj->addProduct($_POST);
+                $obj->addProductCart($_POST);
             } else {
                 echo "$method is not supported for $uri";
             }
@@ -51,11 +51,13 @@ class App
             } else {
                 echo "$method is not supported for $uri";
             }
-        } elseif ($uri === '/basket') {
-            $obj = new BasketController();
+        } elseif ($uri === '/cart') {
+            $obj = new CartController();
 
             if ($method === "GET") {
                 $obj->getCart();
+            } else {
+                echo "$method is not supported for $uri";
             }
         } else {
             require_once './../View/404.html';

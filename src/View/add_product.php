@@ -4,8 +4,8 @@
 <div class="login">
     <h1>Add product</h1>
     <form name="form_main_page" method="post" action="/add-product" autocomplete="off">
-        <label style="color: red"><?php echo $errors['user_id'] ?? ''; ?></label>
-        <input type="hidden" name="user_id" placeholder="User ID" required="required" />
+<!--        <label style="color: red">--><?php //echo $errors['user_id'] ?? ''; ?><!--</label>-->
+<!--        <input type="hidden" name="user_id" placeholder="User ID" required="required" />-->
 
         <label style="color: red"><?php echo $errors['product_id'] ?? ''; ?></label>
         <input type="text" name="product_id" placeholder="Product ID" required="required" />

@@ -48,9 +48,9 @@
                 <span class="title-divider">|</span>
                 <span class="products__sub-category">Clothes</span>
                 <span class="title-divider">|</span>
-                <form name="Basket" method="post" action="/basket" autocomplete="off">
-                    <button class="glow-on-hover" type="submit">Basket</button>
-                </form>
+                <a href="http://localhost/cart" target="blank">
+                    <button class="glow" type="submit"><img src="https://cdn.icon-icons.com/icons2/3965/PNG/512/tea_beans_green_bag_food_pack_coffee_bags_restaurant_icon_251579.png" alt="Cart"></button>
+                </a>
             </h2>
         </div>
 
@@ -120,9 +120,23 @@
         background-size: cover;
     }
 
+    .glow {
+        position: absolute;
+        top: 10px;
+        right: 10px;
+        width: 80px;
+        height: 40px;
+        border: none;
+        outline: none;
+        background: transparent;
+        cursor: pointer;
+        z-index: 0;
+        border-radius: 10px;
+    }
+
     .glow-on-hover {
         width: 80px;
-        height: 50px;
+        height: 40px;
         border: none;
         outline: none;
         color: #fff;
