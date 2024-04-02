@@ -77,13 +77,20 @@
                             </div>
 
 <!--                            <input type="hidden" name="user_id" placeholder="User ID" required="required" value="--><?php //echo $_SESSION['user_id']; ?><!--" />-->
-<!--                            <label style="color: red">--><?php //echo $errors['product_id'] ?? ''; ?><!--</label>-->
+
+                            <label style="color: red"><?php echo $errors['product_id'] ?? ''; ?></label>
                             <input type="hidden" name="product_id" placeholder="Product ID" required="required" value="<?php echo $product['id']; ?>" />
 
                             <label style="color: red"><?php echo $errors['quantity'] ?? ''; ?></label>
                             <input type="text" name="quantity" placeholder="Quantity" required="required" />
+                            <form>
+                                <button class="glow-on-hover" type="submit">+</button>
+                            </form>
+                            <form>
+                                <button class="glow-on-hover" type="submit">-</button>
+                            </form>
 
-                            <button class="glow-on-hover" type="submit">ADD!</button>
+
 
                         </a>
 
