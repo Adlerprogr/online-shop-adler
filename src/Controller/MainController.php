@@ -97,9 +97,9 @@ class MainController
         if (empty($check)) {
             echo 'There are no products';
         } else {
-            if ($quantity <= 0) {
+            if ($this->modelUserProduct->checkQuantity($userId, $productId) <= 0) {
                 echo 'There is no such product in the cart';
-            } elseif ($quantity === 1) {
+            } elseif ($this->modelUserProduct->checkQuantity($userId, $productId) === 1) {
                 $this->modelUserProduct->deleteProduct($userId, $productId);
             } else {
                 $this->modelUserProduct->minusProduct($userId, $productId, $quantity);

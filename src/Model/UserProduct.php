@@ -37,6 +37,15 @@ class UserProduct extends Model
         }
     */
 
+    public function checkQuantity(int $userId, int $productId)
+    {
+        $stmt = $this->pdo->prepare("SELECT * FROM user_products WHERE user_id = :user_id AND product_id = :product_id");
+        $stmt->execute(['user_id' => $userId, 'product_id' => $productId]);
+        $check = $stmt->fetch('quantity');
+
+        return $check;
+    }
+
     public function minusProduct(int $userId, int $productId, int $quantity)
     {
         $stmt = $this->pdo->prepare("UPDATE user_products SET quantity = (quantity - :quantity) WHERE user_id = :user_id AND product_id = :product_id");
