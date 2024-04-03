@@ -80,4 +80,32 @@ class MainController
 
         return $errors;
     }
+
+    public function deleteProduct(array $arr)
+    {
+        session_start();
+        if (!isset($_SESSION['user_id'])) {
+            header("Location: /login");
+        }
+
+        $userId = $_SESSION['user_id'];
+        $productId = $arr['product_id'];
+        $quantity = $arr['quantity'];
+
+        $check = $this->modelUserProduct->checkProduct($userId, $productId);
+
+        if (empty($check)) {
+            echo 'There are no products';
+        } else {
+            if ($quantity <= 0) {
+                echo 'There is no such product in the cart';
+            } elseif ($quantity === 1) {
+                $this->modelUserProduct->deleteProduct($userId, $productId);
+            } else {
+                $this->modelUserProduct->minusProduct($userId, $productId, $quantity);
+            }
+
+            header("Location: /main");
+        }
+    }
 }

@@ -59,6 +59,22 @@ class App
             } else {
                 echo "$method is not supported for $uri";
             }
+        } elseif ($uri === '/delete-product') {
+            $obj = new MainController();
+
+            if ($method === "POST") {
+                $obj->deleteProduct($_POST);
+            } else {
+                echo 'fffffffff';
+            }
+        } elseif ($uri === '/plus-product') {
+            $obj = new MainController();
+
+            if ($method === "POST") {
+                $obj->addProductCart($_POST);
+            } else {
+                echo 'aaaaaaaa';
+            }
         } else {
             require_once './../View/404.html';
         }

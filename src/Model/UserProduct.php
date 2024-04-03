@@ -26,14 +26,6 @@ class UserProduct extends Model
         return $check;
     }
 
-    public function productsUserCart()
-    {
-        $stmt = $this->pdo->query("SELECT u.user_id, u.product_id, p.id, p.name, p.description, p.price, p.img_url, u.quantity FROM user_products u INNER JOIN products p ON u.product_id = p.id");
-        $products = $stmt->fetchAll();
-
-        return $products;
-    }
-
     /*
         public function allProductsByUserId(int $user_id)
         {
@@ -44,4 +36,16 @@ class UserProduct extends Model
             return $productsUser;
         }
     */
+
+    public function minusProduct(int $userId, int $productId, int $quantity)
+    {
+        $stmt = $this->pdo->prepare("UPDATE user_products SET quantity = (quantity - :quantity) WHERE user_id = :user_id AND product_id = :product_id");
+        $stmt->execute(['user_id' => $userId, 'product_id' => $productId, 'quantity' => $quantity]);
+    }
+
+    public function deleteProduct(int $userId, int $productId)
+    {
+        $stmt = $this->pdo->prepare("DELETE FROM user_products WHERE user_id = :user_id AND product_id = :product_id");
+        $stmt->execute(['user_id' => $userId, 'product_id' => $productId]);
+    }
 }

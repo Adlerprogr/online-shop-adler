@@ -4,11 +4,13 @@ class CartController
 {
     private Product $modelProduct;
     private UserProduct $modelUserProduct;
+    private UserProductProduct $modelUserProductProduct;
 
     public function __construct()
     {
         $this->modelProduct = new Product();
         $this->modelUserProduct = new UserProduct();
+        $this->modelUserProductProduct = new UserProductProduct();
     }
 
     public function pathToPage()
@@ -28,8 +30,10 @@ class CartController
                 header("Location: /login");
             }
         }
+        $userId = $_SESSION['user_id'];
 
-        $cartUser = $this->modelUserProduct->productsUserCart();
+        $cartUser = $this->modelUserProductProduct->productsUserCart($userId);
+        $sumProducts = $this->modelUserProductProduct->sumProducts($userId); // сумма продуктов
 
         if (empty($cartUser)) {
             echo 'The basket is empty';
