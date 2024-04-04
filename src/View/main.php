@@ -60,7 +60,7 @@
 
                 <?php foreach ($products as $product): ?>
 
-                <form name="form_main_page" method="post" action="/main" autocomplete="off">
+<!--                <form name="form_main_page" method="post" action="/main" autocomplete="off">-->
 
                     <li class="products__list-item">
 
@@ -87,15 +87,29 @@
                             <td>
                                 <div class="quantity_inner">
                                 <form action="/delete-product" method="post">
+
+                                    <input type="hidden" name="product_id" placeholder="Product ID" required="required" value="<?php echo $product['id']; ?>" />
+                                    <label style="color: red"><?php echo $errors['quantity'] ?? ''; ?></label>
+                                    <input type="hidden" name="quantity" placeholder="Quantity" required="required" value = 1 />
+
                                     <button class="bt_minus">
                                         <svg viewBox="0 0 24 24"><line x1="5" y1="12" x2="19" y2="12"></line></svg>
                                     </button>
+
                                 </form>
-                                    <input type="number" value="1" size="2" name="quantity" class="quantity" data-max-count="20" />
+
+                                    <input type="number" value="1" size="2" name="quantity" class="quantity" min="1" max="10" />
+
                                 <form action="/plus-product" method="post">
+
+                                    <input type="hidden" name="product_id" placeholder="Product ID" required="required" value="<?php echo $product['id']; ?>" />
+                                    <label style="color: red"><?php echo $errors['quantity'] ?? ''; ?></label>
+                                    <input type="hidden" name="quantity" placeholder="Quantity" required="required" value = 1 />
+
                                     <button class="bt_plus">
                                         <svg viewBox="0 0 24 24"><line x1="12" y1="5" x2="12" y2="19"></line><line x1="5" y1="12" x2="19" y2="12"></line></svg>
                                     </button>
+
                                 </form>
                                 </div>
                             </td>
@@ -134,7 +148,7 @@
 
                     </li>
 
-                </form>
+<!--                </form>-->
 
                 <?php endforeach; ?>
 

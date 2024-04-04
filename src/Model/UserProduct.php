@@ -37,11 +37,30 @@ class UserProduct extends Model
         }
     */
 
+    public function productsUserCart($userId)
+    {
+        $stmt = $this->pdo->prepare("SELECT u.user_id, u.product_id, p.id, p.name, p.description, p.price, p.img_url, u.quantity FROM user_products u INNER JOIN products p ON u.product_id = p.id WHERE user_id = :user_id");
+        $stmt->execute(['user_id' => $userId]);
+        $products = $stmt->fetchAll();
+
+        return $products;
+    }
+
+// доделать сумму продуктов, пока получаю сумму одного продукта
+    public function sumProducts($userId)
+    {
+        $stmt = $this->pdo->prepare("SELECT u.user_id, u.product_id, p.id, SUM(u.quantity * p.price) AS sum_qp FROM user_products u INNER JOIN products p  ON u.product_id = p.id WHERE user_id = :user_id GROUP BY u.user_id, u.product_id, p.id");
+        $stmt->execute(['user_id' => $userId]);
+        $sum = $stmt->fetch();
+
+        return $sum;
+    }
+
     public function checkQuantity(int $userId, int $productId)
     {
         $stmt = $this->pdo->prepare("SELECT * FROM user_products WHERE user_id = :user_id AND product_id = :product_id");
         $stmt->execute(['user_id' => $userId, 'product_id' => $productId]);
-        $check = $stmt->fetch('quantity');
+        $check = $stmt->fetch();
 
         return $check;
     }
@@ -57,4 +76,13 @@ class UserProduct extends Model
         $stmt = $this->pdo->prepare("DELETE FROM user_products WHERE user_id = :user_id AND product_id = :product_id");
         $stmt->execute(['user_id' => $userId, 'product_id' => $productId]);
     }
+//
+//    public function checkNumberProducts(int $userId)
+//    {
+//        $stmt = $this->pdo->prepare("SELECT * FROM user_products WHERE user_id = :user_id");
+//        $stmt->execute(['user_id' => $userId]);
+//        $checkNumber = count($stmt->fetch());
+//
+//        return $checkNumber;
+//    }
 }

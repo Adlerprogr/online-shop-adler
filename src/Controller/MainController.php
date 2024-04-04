@@ -29,7 +29,11 @@ class MainController
             }
         }
 
+//        $userId = $_SESSION['user_id'];
+//        $productId = $arr['product_id'];
+
         $products = $this->modelProduct->getProducts();
+//        $count = $this->modelUserProduct->checkNumberProducts($userId);
 
         if (empty($products)) {
             echo 'Are no products';
