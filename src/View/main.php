@@ -47,10 +47,15 @@
                 <span class="products__main-category">Products</span>
                 <span class="title-divider">|</span>
                 <span class="products__sub-category">Clothes</span>
-                <span class="title-divider">|</span>
+
                 <a href="http://localhost/cart" target="blank">
-                    <button class="glow" type="submit"><img src="https://www.svgrepo.com/show/508283/cart.svg" alt="Cart"></button>
+                    <button class="glow" type="submit"><img src="https://www.svgrepo.com/show/508283/cart.svg" alt="Cart">
+                        <?php if (isset($sumQuantity)): ?>
+                            <?php echo $sumQuantity . ' шт'; ?>
+                        <?php endif; ?>
+                    </button>
                 </a>
+
             </h2>
         </div>
 
@@ -59,8 +64,6 @@
             <ul class="products__list js-products-list">
 
                 <?php foreach ($products as $product): ?>
-
-<!--                <form name="form_main_page" method="post" action="/main" autocomplete="off">-->
 
                     <li class="products__list-item">
 
@@ -76,8 +79,6 @@
                                 <img src="<?php echo $product['img_url']; ?>" alt="lamp image" />
                             </div>
 
-<!--                            <input type="hidden" name="user_id" placeholder="User ID" required="required" value="--><?php //echo $_SESSION['user_id']; ?><!--" />-->
-
                             <label style="color: red"><?php echo $errors['product_id'] ?? ''; ?></label>
                             <input type="hidden" name="product_id" placeholder="Product ID" required="required" value="<?php echo $product['id']; ?>" />
 
@@ -86,7 +87,8 @@
 
                             <td>
                                 <div class="quantity_inner">
-                                <form action="/delete-product" method="post">
+
+                                <form name='delete_product' action="/delete-product" method="post">
 
                                     <input type="hidden" name="product_id" placeholder="Product ID" required="required" value="<?php echo $product['id']; ?>" />
                                     <label style="color: red"><?php echo $errors['quantity'] ?? ''; ?></label>
@@ -100,7 +102,7 @@
 
                                     <input type="number" value="1" size="2" name="quantity" class="quantity" min="1" max="10" />
 
-                                <form action="/plus-product" method="post">
+                                <form name='plus_product' action="/plus-product" method="post">
 
                                     <input type="hidden" name="product_id" placeholder="Product ID" required="required" value="<?php echo $product['id']; ?>" />
                                     <label style="color: red"><?php echo $errors['quantity'] ?? ''; ?></label>
@@ -111,44 +113,13 @@
                                     </button>
 
                                 </form>
+
                                 </div>
                             </td>
-
-<!--                            <div class="quantity_inner">-->
-<!--                                <button class="bt_minus">-->
-<!--                                    <svg viewBox="0 0 24 24"><line x1="5" y1="12" x2="19" y2="12"></line></svg>-->
-<!--                                </button>-->
-<!--                                <input type="text" value="1" size="2" class="quantity" data-max-count="20" />-->
-<!--                                <button class="bt_plus">-->
-<!--                                    <svg viewBox="0 0 24 24"><line x1="12" y1="5" x2="12" y2="19"></line><line x1="5" y1="12" x2="19" y2="12"></line></svg>-->
-<!--                                </button>-->
-<!--                            </div>-->
-
-<!--                            <form action="/add-product" method="post">-->
-<!--                                <label style="color: red">--><?php //echo $errors['product_id'] ?? ''; ?><!--</label>-->
-<!--                                <input type="hidden" name="product_id" placeholder="Product ID" required="required" value="--><?php //echo $product['id']; ?><!--" />-->
-<!---->
-<!--                                <button class="glow-on-hover" type="submit">+</button>-->
-<!--                            </form>-->
-<!---->
-<!--                            <div class="">-->
-<!--                                --><?php //echo $errors['quantity'] ?? ''; ?>
-<!--                                <input type="number" name="quantity" min="1" max="10">-->
-<!--                            </div>-->
-<!---->
-<!--                            <form action="/delete-product" method="post">-->
-<!--                                <label style="color: red">--><?php //echo $errors['product_id'] ?? ''; ?><!--</label>-->
-<!--                                <input type="hidden" name="product_id" placeholder="Product ID" required="required" value="--><?php //echo $product['id']; ?><!--" />-->
-<!--                                <input type="hidden" name="quantity" value="1">-->
-<!---->
-<!--                                <button class="glow-on-hover" type="submit">-</button>-->
-<!--                            </form>-->
 
                         </a>
 
                     </li>
-
-<!--                </form>-->
 
                 <?php endforeach; ?>
 
@@ -252,40 +223,41 @@
         box-sizing: border-box;
     }
     .quantity_inner {
-        display: inline-flex;
-        border-radius: 26px;
-        border: 4px solid #337AB7;
+        display: flex;
+        justify-content: center;
     }
     .quantity_inner .bt_minus,
     .quantity_inner .bt_plus,
     .quantity_inner .quantity {
+        color: #BFE2FF;
         height: 40px;
         width: 40px;
         padding: 0;
-        border: 0;
-        margin: 0;
-        background: transparent;
+        margin: 10px 2px;
+        border-radius: 10px;
+        border: 4px solid #BFE2FF;
+        background: #337AB7;
         cursor: pointer;
         outline: 0;
+        box-shadow: 0 2px 5px rgba(0,0,0,0.2), 0 4px 6px rgba(0,0,0,0.2);
     }
     .quantity_inner .quantity {
         width: 50px;
         text-align: center;
-        font-size: 30px;
-        font-weight: bold;
-        color: #000;
-        font-family: Menlo,Monaco,Consolas,"Courier New",monospace;
+        font-size: 22px;
+        color: #FFF;
+        font-family:Menlo,Monaco,Consolas,"Courier New",monospace;
     }
     .quantity_inner .bt_minus svg,
     .quantity_inner .bt_plus svg {
-        stroke: #337AB7;
+        stroke: #BFE2FF;
         stroke-width: 4;
         transition: 0.5s;
-        margin: 10px;
+        margin: 4px;
     }
     .quantity_inner .bt_minus:hover svg,
     .quantity_inner .bt_plus:hover svg {
-        stroke: #000;
+        stroke: #FFF;
     }
     /*конец*/
 

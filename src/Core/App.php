@@ -32,8 +32,6 @@ class App
 
             if ($method === "GET") {
                 $obj->mainPage();
-            } elseif ($method === "POST") {
-                $obj->addProductCart($_POST);
             } else {
                 echo "$method is not supported for $uri";
             }
@@ -56,24 +54,25 @@ class App
 
             if ($method === "GET") {
                 $obj->getCart();
+                /* $obj->allProductsByUserId(); */
             } else {
                 echo "$method is not supported for $uri";
             }
         } elseif ($uri === '/delete-product') {
-            $obj = new MainController();
+            $obj = new CartController();
 
             if ($method === "POST") {
                 $obj->deleteProduct($_POST);
             } else {
-                echo 'fffffffff';
+                echo "$method is not supported for $uri";
             }
         } elseif ($uri === '/plus-product') {
-            $obj = new MainController();
+            $obj = new CartController();
 
             if ($method === "POST") {
                 $obj->addProductCart($_POST);
             } else {
-                echo 'aaaaaaaa';
+                echo "$method is not supported for $uri";
             }
         } else {
             require_once './../View/404.html';

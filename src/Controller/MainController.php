@@ -11,12 +11,12 @@ class MainController
         $this->modelUserProduct = new UserProduct();
     }
 
-    public function pathToPage()
+    public function pathToPage():void
     {
         require_once './../View/main.php';
     }
 
-    public function mainPage()
+    public function mainPage():void
     {
         if (session_status() == PHP_SESSION_NONE) {
             session_start();
@@ -28,88 +28,19 @@ class MainController
                 header("Location: /login");
             }
         }
-
-//        $userId = $_SESSION['user_id'];
-//        $productId = $arr['product_id'];
+        $userId = $_SESSION['user_id'];
 
         $products = $this->modelProduct->getProducts();
-//        $count = $this->modelUserProduct->checkNumberProducts($userId);
 
-        if (empty($products)) {
-            echo 'Are no products';
-        } else {
-            require_once './../View/main.php';
-        }
-    }
+        if (isset($products)) {
+            $allUsersProducts = $this->modelUserProduct->productsUserCart($userId);
+            $sumQuantity = 0;
 
-    public function addProductCart(array $arr)
-    {
-        session_start();
-        if (!isset($_SESSION['user_id'])) {
-            header("Location: /login");
-        }
-
-        $userId = $_SESSION['user_id'];
-        $productId = $arr['product_id'];
-        $quantity = $arr['quantity'];
-
-        $errors = $this->validateMain($productId, $quantity);
-
-        $check = $this->modelUserProduct->checkProduct($userId, $productId);
-
-        if (!empty($this->modelProduct->getProducts())) {
-            if (empty($errors)) {
-                if (empty($check)) {
-                    $this->modelUserProduct->create($userId, $productId, $quantity);
-                } else {
-                    $this->modelUserProduct->updateQuantity($userId, $productId, $quantity);
-                }
-
-                header("Location: /main");
-            } else {
-                echo 'Specify another quantity greater than 0';
+            foreach ($allUsersProducts as $cartProduct) {
+                $sumQuantity += $cartProduct['quantity'];
             }
-        } else {
-            echo 'There are no products';
-        }
-    }
+        } // сделать else
 
-    private function validateMain($productId, $quantity) // Нужно додбавить проверки и изменить название
-    {
-        $errors = [];
-
-        if ($quantity <= 0) {
-            $errors['quantity'] = 'Specify another quantity greater than 0';
-        }
-
-        return $errors;
-    }
-
-    public function deleteProduct(array $arr)
-    {
-        session_start();
-        if (!isset($_SESSION['user_id'])) {
-            header("Location: /login");
-        }
-
-        $userId = $_SESSION['user_id'];
-        $productId = $arr['product_id'];
-        $quantity = $arr['quantity'];
-
-        $check = $this->modelUserProduct->checkProduct($userId, $productId);
-
-        if (empty($check)) {
-            echo 'There are no products';
-        } else {
-            if ($this->modelUserProduct->checkQuantity($userId, $productId) <= 0) {
-                echo 'There is no such product in the cart';
-            } elseif ($this->modelUserProduct->checkQuantity($userId, $productId) === 1) {
-                $this->modelUserProduct->deleteProduct($userId, $productId);
-            } else {
-                $this->modelUserProduct->minusProduct($userId, $productId, $quantity);
-            }
-
-            header("Location: /main");
-        }
+        require_once './../View/main.php';
     }
 }

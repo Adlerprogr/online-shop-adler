@@ -92,21 +92,25 @@ class UserProductController
         return $errors;
     }
 
-    public function userByVerification()
+    public function userByVerification():void
     {
         if (session_status() == PHP_SESSION_NONE) {
             session_start();
             if (!isset($_SESSION['user_id'])) {
                 header("Location: /login");
-            } else {
-                $products = $this->modelProduct->getProducts();
-
-                if (empty($products)) {
-                    return 'Are no products';
-                } else {
-                    require_once './../View/add_product.php';
-                }
+            }
+        } else {
+            if (!isset($_SESSION['user_id'])) {
+                header("Location: /login");
             }
         }
+
+        $checkProducts = $this->modelProduct->getProducts();
+
+        if (empty($checkProducts)) {
+            echo 'Are no checkProducts';
+        }
+
+        require_once './../View/add_product.php';
     }
 }
