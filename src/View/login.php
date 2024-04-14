@@ -4,7 +4,7 @@
 <div id="algn">
     <div id="container">
         <p class="head">Login</p>
-        <form action="/login" class="input-container" method="post">
+        <form action="/login" class="input-container" method="POST">
             <label style="color: red"><?php echo $errors['email'] ?? ''; ?></label>
             <input type="email" name="email" placeholder="Enter email" class="inpt" required>
             <label style="color: red"><?php echo $errors['password'] ?? ''; ?></label>

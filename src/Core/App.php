@@ -72,9 +72,9 @@ class App
         $method = $_SERVER['REQUEST_METHOD'];
 
         if (isset($this->routes[$uri])) {
-            $routeMethod = $this->routes[$uri];
-            if (isset($routeMethod[$method])) {
-                $team = $routeMethod[$method];
+            $routeMethod = $this->routes[$uri][$method];
+            if (isset($routeMethod)) {
+                $team = $routeMethod;
                 $className = $team['class'];
                 $function = $team['method'];
                 $obj = new $className;

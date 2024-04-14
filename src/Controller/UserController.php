@@ -15,7 +15,7 @@ class UserController
 
     public function getRegistration():void
     {
-        require_once './../View/registrate.php';
+        require_once './../View/registration.php';
     }
 
     public function postRegistration(array $arr):void
@@ -32,7 +32,7 @@ class UserController
             $this->modelUser->create($firstName, $lastName, $email, $password, $repeatPassword);
         }
 
-        require_once './../View/registrate.php';
+        require_once './../View/registration.php';
     }
 
     private function validateRegistration(array $arr):array
