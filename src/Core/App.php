@@ -72,13 +72,17 @@ class App
         $method = $_SERVER['REQUEST_METHOD'];
 
         if (isset($this->routes[$uri])) {
-            $routeMethod = $this->routes[$uri][$method];
-            if (isset($routeMethod)) {
-                $team = $routeMethod;
+            $routeMethod = $this->routes[$uri];
+            if (isset($routeMethod[$method])) {
+                $team = $routeMethod[$method];
                 $className = $team['class'];
                 $function = $team['method'];
                 $obj = new $className;
-                $obj->$function();
+                if ($team === 'GET') {
+                    $obj->$function();
+                } else {
+                    $obj->$function($_POST);
+                }
             } else {
                 echo "$method is not supported for $uri";
             }
