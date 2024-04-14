@@ -1,5 +1,9 @@
 <?php
 
+namespace Controller;
+
+use Model\User;
+
 class UserController
 {
     private User $modelUser;
@@ -9,14 +13,14 @@ class UserController
         $this->modelUser = new User();
     }
 
-    public function registForm():void
+    public function getRegistration():void
     {
         require_once './../View/registrate.php';
     }
 
-    public function registrate(array $arr):void
+    public function postRegistration(array $arr):void
     {
-        $errors = $this->validateRegistrate($arr);
+        $errors = $this->validateRegistration($arr);
 
         if (empty($errors)) {
             $firstName = $arr['first_name'];
@@ -31,7 +35,7 @@ class UserController
         require_once './../View/registrate.php';
     }
 
-    private function validateRegistrate(array $arr):array
+    private function validateRegistration(array $arr):array
     {
         $errors = [];
 
@@ -102,12 +106,12 @@ class UserController
         return $errors;
     }
 
-    public function loginForm():void
+    public function getLogin():void
     {
         require_once './../View/login.php';
     }
 
-    public function systemLogin(array $arr):void
+    public function postLogin(array $arr):void
     {
         $errors = $this->validateLogin($arr);
 

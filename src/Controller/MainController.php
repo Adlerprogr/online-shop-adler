@@ -1,5 +1,10 @@
 <?php
 
+namespace Controller;
+
+use Model\Product;
+use Model\UserProduct;
+
 class MainController
 {
     private Product $modelProduct;
@@ -16,7 +21,7 @@ class MainController
         require_once './../View/main.php';
     }
 
-    public function mainPage():void
+    public function getMainPage():void
     {
         if (session_status() == PHP_SESSION_NONE) {
             session_start();

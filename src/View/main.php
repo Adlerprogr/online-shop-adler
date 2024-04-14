@@ -88,7 +88,7 @@
                             <td>
                                 <div class="quantity_inner">
 
-                                <form name='delete_product' action="/delete-product" method="post">
+                                <form name='delete_product' action="/delete-product" method="POST">
 
                                     <input type="hidden" name="product_id" placeholder="Product ID" required="required" value="<?php echo $product['id']; ?>" />
                                     <label style="color: red"><?php echo $errors['quantity'] ?? ''; ?></label>
@@ -102,7 +102,7 @@
 
                                     <input type="number" value="1" size="2" name="quantity" class="quantity" min="1" max="10" />
 
-                                <form name='plus_product' action="/plus-product" method="post">
+                                <form name='plus_product' action="/plus-product" method="POST">
 
                                     <input type="hidden" name="product_id" placeholder="Product ID" required="required" value="<?php echo $product['id']; ?>" />
                                     <label style="color: red"><?php echo $errors['quantity'] ?? ''; ?></label>

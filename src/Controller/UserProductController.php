@@ -1,5 +1,11 @@
 <?php
 
+namespace Controller;
+
+use Model\Product;
+use Model\User;
+use Model\UserProduct;
+
 class UserProductController
 {
     private Product $modelProduct;
@@ -14,12 +20,12 @@ class UserProductController
 
     }
 
-    public function pathToAdding():void
+    public function getProducts():void
     {
         require_once './../View/add_product.php';
     }
 
-    public function addUsersProduct(array $arr):void
+    public function postAddProduct(array $arr):void
     {
         $errors = $this->validateUserProduct($arr);
 
@@ -92,7 +98,7 @@ class UserProductController
         return $errors;
     }
 
-    public function userByVerification():void
+    public function addingProducts():void
     {
         if (session_status() == PHP_SESSION_NONE) {
             session_start();

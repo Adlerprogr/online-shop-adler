@@ -3,7 +3,7 @@
 
 <div class="login">
     <h1>Registration</h1>
-    <form name="signup_form" method="post" action="/registrate" autocomplete="off">
+    <form name="signup_form" method="POST" action="/registration" autocomplete="off">
         <label style="color: red"><?php echo $errors['first_name'] ?? ''; ?></label>
         <input type="text" name="first_name" placeholder="First Name" required="required" />
 

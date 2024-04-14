@@ -1,5 +1,7 @@
 <?php
 
+namespace Model;
+
 class User extends Model
 {
     public function create(string $firstName, string $lastName, string $email, $password, $repeatPassword):void
