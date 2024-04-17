@@ -4,11 +4,11 @@ namespace Core;
 
 class Autoloader
 {
-    public function registration():void
+    public static function registration(string $dir):void
     {
-        $autoloader = function (string $className) {
-            $helper = str_replace('\\', '/', $className);
-            $path = "./../$helper.php";
+        $autoloader = function (string $className) use ($dir) {
+            $helper = str_replace('\\', DIRECTORY_SEPARATOR, $className);
+            $path = $dir . '/' . $helper . '.php';
             if (file_exists($path)) {
                 require_once $path;
                 return true;

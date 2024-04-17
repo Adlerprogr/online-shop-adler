@@ -6,8 +6,9 @@ use Core\Autoloader;
 require_once './../Core/App.php';
 require_once './../Core/Autoloader.php';
 
-$autoloader = new Autoloader();
-$autoloader->registration();
+$dir = dirname(__DIR__);
+
+Autoloader::registration($dir);
 
 $app = new App();
 $app->run();
