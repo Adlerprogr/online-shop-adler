@@ -58,13 +58,13 @@ class UserProduct extends Model
         $stmt->execute(['user_id' => $userId, 'product_id' => $productId]);
     }
 
-//    public function allProductsByUserId(int $user_id)
-//    {
-//        $stmt = $this->pdo->prepare("SELECT * FROM user_products WHERE user_id = :user_id");
-//        $stmt->execute(['user_id' => $user_id]);
-//        $productsUser = $stmt->fetch();
-//
-//        return $productsUser;
-//    }
+    public function allProductsByUserId(int $user_id)
+    {
+        $stmt = $this->pdo->prepare("SELECT * FROM user_products WHERE user_id = :user_id");
+        $stmt->execute(['user_id' => $user_id]);
+        $productsUser = $stmt->fetch();
+
+        return $productsUser;
+    }
 
 }

@@ -72,8 +72,8 @@ class App
             ],
             'POST' => [
                 'class' => OrderController::class,
-                'method' =>
-            ]
+                'method' => 'postOrder'
+            ],
         ]
     ];
 

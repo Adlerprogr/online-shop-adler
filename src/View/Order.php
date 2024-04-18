@@ -49,7 +49,7 @@
 
         <div class="input-box">
             <label style="color: red"><?php echo $errors['city'] ?? ''; ?></label>
-            <input type="text" name="city" placeholder="city" class="inpt" required>
+            <input type="text" name="city" placeholder="City" class="inpt" required>
         </div>
 
         <div class="input-box">
@@ -62,7 +62,7 @@
             <input type="text" name="country" placeholder="Country" class="inpt" required>
         </div>
 
-        <button type="submit" class="btn">Order</button>
+        <button type="submit" class="btn">To send</button>
 
     </form>
 
@@ -118,7 +118,7 @@
 
         border-radius: 12px;
 
-        padding: 30px 40px;
+        padding: 60px 40px;
 
         display: none;
 
