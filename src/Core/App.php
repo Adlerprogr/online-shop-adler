@@ -7,6 +7,12 @@ use Controller\MainController;
 use Controller\OrderController;
 use Controller\UserController;
 use Controller\UserProductController;
+use Request\CartRequest;
+use Request\OrderRequest;
+use Request\RegistrationRequest;
+use Request\LoginRequest;
+use Request\UserProductRequest;
+use Request\Request;
 
 class App
 {
@@ -18,7 +24,8 @@ class App
             ],
             'POST' => [
                 'class' => UserController::class,
-                'method' => 'postRegistration'
+                'method' => 'postRegistration',
+                'request' => RegistrationRequest::class
             ],
         ],
         '/login' => [
@@ -28,7 +35,8 @@ class App
             ],
             'POST' => [
                 'class' => UserController::class,
-                'method' => 'postLogin'
+                'method' => 'postLogin',
+                'request' => LoginRequest::class
             ],
         ],
         '/main' => [
@@ -44,7 +52,8 @@ class App
             ],
             'POST' => [
                 'class' => UserProductController::class,
-                'method' => 'postAddProduct'
+                'method' => 'postAddProduct',
+                'request' => UserProductRequest::class
             ],
         ],
         '/cart' => [
@@ -56,13 +65,15 @@ class App
         '/delete-product' => [
             'POST' => [
                 'class' => CartController::class,
-                'method' => 'deleteProduct'
+                'method' => 'deleteProduct',
+                'request' => CartRequest::class
             ],
         ],
         '/plus-product' => [
             'POST' => [
                 'class' => CartController::class,
-                'method' => 'addProductCart'
+                'method' => 'addProductCart',
+                'request' => CartRequest::class
             ],
         ],
         '/order' => [
@@ -72,7 +83,8 @@ class App
             ],
             'POST' => [
                 'class' => OrderController::class,
-                'method' => 'postOrder'
+                'method' => 'postOrder',
+                'request' => OrderRequest::class
             ],
         ]
     ];
@@ -85,15 +97,20 @@ class App
         if (isset($this->routes[$uri])) {
             $routeMethod = $this->routes[$uri];
             if (isset($routeMethod[$method])) {
-                $team = $routeMethod[$method];
-                $className = $team['class'];
-                $function = $team['method'];
-                $obj = new $className;
-                if ($team === 'GET') {
-                    $obj->$function();
+                $handler = $routeMethod[$method];
+
+                $class = $handler['class'];
+                $functionMethod = $handler['method'];
+
+                if (isset($handler['request'])) {
+                    $requestClass = $handler['request'];
+                    $request = new $requestClass($method, $uri, headers_list(), $_POST);
                 } else {
-                    $obj->$function($_POST);
+                    $request = new Request($method, $uri, headers_list(), $_POST);
                 }
+
+                $obj = new $class;
+                $obj->$functionMethod($request);
             } else {
                 echo "$method is not supported for $uri";
             }

@@ -1,12 +1,12 @@
 <?php
 
-namespace Model;
+namespace Repository;
 
-use Entity\UserEntity;
-use Entity\ProductEntity;
-use Entity\UserProductEntity;
+use Entity\User;
+use Entity\Product;
+use Entity\UserProduct;
 
-class UserProduct extends Model
+class UserProductRepository extends Repository
 {
     public function create(int $userId, int $productId, int $quantity): void
     {
@@ -20,7 +20,7 @@ class UserProduct extends Model
         $stmt->execute(['user_id' => $userId, 'product_id' => $productId, 'quantity' => $quantity]);
     }
 
-    public function checkProduct(int $userId, int $productId): UserProductEntity|null
+    public function checkProduct(int $userId, int $productId): UserProduct|null
     {
         $stmt = $this->pdo->prepare("SELECT 
         up.id AS id, up.quantity,
@@ -41,12 +41,7 @@ class UserProduct extends Model
             return null;
         }
 
-        return new UserProductEntity(
-            $check['id'],
-            new UserEntity($check['user_id'], $check['first_name'], $check['last_name'], $check['email'], $check['password'], $check['repeat_password']),
-            new ProductEntity($check['product_id'], $check['name'], $check['description'], $check['price'], $check['img_url']),
-            $check['quantity']
-        );
+        return $this->hydrate($check);
     }
 
     public function productsUserCart($userId): array|null
@@ -72,12 +67,7 @@ class UserProduct extends Model
 
         $userProductArray = [];
         foreach ($products as $product) {
-            $userProductArray[] = new UserProductEntity(
-                $product['id'],
-                new UserEntity($product['user_id'], $product['first_name'], $product['last_name'], $product['email'], $product['password'], $product['repeat_password']),
-                new ProductEntity($product['product_id'], $product['name'], $product['description'], $product['price'], $product['img_url']),
-                $product['quantity']
-            );
+            $userProductArray[] = $this->hydrate($product);
         }
 
         return $userProductArray;
@@ -117,5 +107,15 @@ class UserProduct extends Model
     {
         $stmt = $this->pdo->prepare("DELETE FROM user_product WHERE user_id = :user_id");
         $stmt->execute(['user_id' => $userId]);
+    }
+
+    public function hydrate(array $date): UserProduct
+    {
+        return new UserProduct(
+            $date['id'],
+            new User($date['user_id'], $date['first_name'], $date['last_name'], $date['email'], $date['password'], $date['repeat_password']),
+            new Product($date['product_id'], $date['name'], $date['description'], $date['price'], $date['img_url']),
+            $date['quantity']
+        );
     }
 }

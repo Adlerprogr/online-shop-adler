@@ -1,10 +1,10 @@
 <?php
 
-namespace Model;
+namespace Repository;
 
-use Entity\ProductEntity;
+use Entity\Product;
 
-class Product extends Model
+class ProductRepository extends Repository
 {
     public function getProducts(): array|null
     {
@@ -17,13 +17,13 @@ class Product extends Model
 
         $productEntity = [];
         foreach ($products as $product) {
-            $productEntity[] = new ProductEntity($product['id'], $product['name'], $product['description'], $product['price'], $product['img_url']);
+            $productEntity[] = $this->hydrate($product);
         }
 
         return $productEntity;
     }
 
-    public function getProductById(int $productId): ProductEntity|null
+    public function getProductById(int $productId): Product|null
     {
         $stmt = $this->pdo->prepare("SELECT * FROM products WHERE id = :id");
         $stmt->execute(['id' => $productId]);
@@ -33,6 +33,11 @@ class Product extends Model
             return null;
         }
 
-        return new ProductEntity($getProduct['id'], $getProduct['name'], $getProduct['description'], $getProduct['price'], $getProduct['img_url']);
+        return $this->hydrate($getProduct);
+    }
+
+    public function hydrate(array $date): Product
+    {
+        return new Product($date['id'], $date['name'], $date['description'], $date['price'], $date['img_url']);
     }
 }

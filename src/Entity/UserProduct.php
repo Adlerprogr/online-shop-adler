@@ -2,17 +2,17 @@
 
 namespace Entity;
 
-use Model\Product;
-use Model\User;
+use Repository\ProductRepository;
+use Repository\UserRepository;
 
-class UserProductEntity
+class UserProduct
 {
     private int $id;
-    private UserEntity $userId;
-    private ProductEntity $productId;
+    private User $userId;
+    private Product $productId;
     private int $quantity;
 
-    public function __construct(int $id, UserEntity $userId, ProductEntity $productId, int $quantity)
+    public function __construct(int $id, User $userId, Product $productId, int $quantity)
     {
         $this->id = $id;
         $this->userId = $userId;
@@ -30,22 +30,22 @@ class UserProductEntity
         $this->id = $id;
     }
 
-    public function getUserId(): UserEntity
+    public function getUserId(): User
     {
         return $this->userId;
     }
 
-    public function setUserId(UserEntity $userId): void
+    public function setUserId(User $userId): void
     {
         $this->userId = $userId;
     }
 
-    public function getProductId(): ProductEntity
+    public function getProductId(): Product
     {
         return $this->productId;
     }
 
-    public function setProductId(ProductEntity $productId): void
+    public function setProductId(Product $productId): void
     {
         $this->productId = $productId;
     }

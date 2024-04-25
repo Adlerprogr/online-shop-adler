@@ -2,7 +2,7 @@
 
 namespace Entity;
 
-class OrderEntity
+class Order
 {
     private int $id;
     private string $email;

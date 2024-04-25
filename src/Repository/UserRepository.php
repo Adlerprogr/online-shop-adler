@@ -1,10 +1,10 @@
 <?php
 
-namespace Model;
+namespace Repository;
 
-use Entity\UserEntity;
+use Entity\User;
 
-class User extends Model
+class UserRepository extends Repository
 {
     public function create(string $firstName, string $lastName, string $email, $password, $repeatPassword): void
     {
@@ -12,7 +12,7 @@ class User extends Model
         $stmt->execute(['first_name' => $firstName, 'last_name' => $lastName, 'email' => $email, 'password' => $password, 'repeat_password' => $repeatPassword]);
     }
 
-    public function getUserByEmail(string $email): UserEntity|null
+    public function getUserByEmail(string $email): User|null
     {
         $stmt = $this->pdo->prepare("SELECT * FROM users WHERE email = :email");
         $stmt->execute(['email' => $email]);
@@ -22,10 +22,10 @@ class User extends Model
             return null;
         }
 
-        return new UserEntity($user['id'], $user['first_name'], $user['last_name'], $user['email'], $user['password'], $user['repeat_password']);
+        return $this->hydrate($user);
     }
 
-    public function getUserById(int $userId): UserEntity|null
+    public function getUserById(int $userId): User|null
     {
         $stmt = $this->pdo->prepare("SELECT * FROM users WHERE id = :id");
         $stmt->execute(['id' => $userId]);
@@ -35,6 +35,11 @@ class User extends Model
             return null;
         }
 
-        return new UserEntity($getUser['id'], $getUser['first_name'], $getUser['last_name'], $getUser['email'], $getUser['password'], $getUser['repeat_password']);
+        return $this->hydrate($getUser);
+    }
+
+    public function hydrate(array $data): User
+    {
+        return new User($data['id'], $data['first_name'], $data['last_name'], $data['email'], $data['password'], $data['repeat_password']);
     }
 }
