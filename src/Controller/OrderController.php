@@ -27,7 +27,7 @@ class OrderController
             header("Location: /login");
         }
 
-        require_once './../View/Order.php';
+        require_once './../View/order.php';
     }
 
     public function postOrder(array $arr)
@@ -46,7 +46,7 @@ class OrderController
         $errors = $this->validateOrder($arr);
 
         if (empty($errors)) {
-            $user_id = $_SESSION['user_id'];
+            $userId = $_SESSION['user_id'];
 
             $email = $arr['email'];
             $phone = $arr['phone'];
@@ -56,13 +56,15 @@ class OrderController
             $postal_code = $arr['postal_code'];
             $country = $arr['country'];
 
-            $checkOrderId = $this->modelOrder->createOrder($email, $phone, $name, $address, $city, $postal_code, $country);
+            $this->modelOrder->createOrder($email, $phone, $name, $address, $city, $postal_code, $country);
 
-            $this->modelOrderProduct->createOrderProduct();
+            $orderId = $this->modelOrder->getOrderId();
 
+            $this->modelOrderProduct->createOrderProduct($userId, $orderId);
+            $this->modelUserProduct->allDeleteProduct($userId);
         }
 
-        require_once '../View/Order.php';
+        require_once './../View/order.php';
     }
 
     private function validateOrder(array $arr)

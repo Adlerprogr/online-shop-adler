@@ -35,14 +35,14 @@ class MainController
         }
         $userId = $_SESSION['user_id'];
 
-        $products = $this->modelProduct->getProducts();
+        $products = $this->modelProduct->getProducts(); // !!! object Product
 
         if (isset($products)) {
-            $allUsersProducts = $this->modelUserProduct->productsUserCart($userId);
+            $cartProducts = $this->modelUserProduct->productsUserCart($userId); // !!! object UserProduct
             $sumQuantity = 0;
 
-            foreach ($allUsersProducts as $cartProduct) {
-                $sumQuantity += $cartProduct['quantity'];
+            foreach ($cartProducts as $cartProduct) {
+                $sumQuantity += $cartProduct->getQuantity();
             }
         } // сделать else
 

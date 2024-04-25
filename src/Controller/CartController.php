@@ -36,17 +36,17 @@ class CartController
 
         $userId = $_SESSION['user_id'];
 
-        $allUsersProducts = $this->modelUserProduct->productsUserCart($userId);
+        $cartProducts = $this->modelUserProduct->productsUserCart($userId); // !!! object UserProduct
 
-        if (empty($allUsersProducts)) {
+        if (empty($cartProducts)) {
             echo 'The basket is empty'; // Как использовать в cart.php if, else с foreach?
         } else {
             $sumQuantity = 0;
             $sumPrice = 0;
 
-            foreach ($allUsersProducts as $cartProduct) {
-                $sumQuantity += $cartProduct['quantity'];
-                $sumPrice += $cartProduct['quantity'] * $cartProduct['price'];
+            foreach ($cartProducts as $cartProduct) {
+                $sumQuantity += $cartProduct->getQuantity();
+                $sumPrice += $cartProduct->getQuantity() * $cartProduct->getProductId()->getPrice();
             }
         }
 
@@ -66,7 +66,7 @@ class CartController
 
         $errors = $this->validateMain($productId, $quantity); // Как использовать в cart.php if, else с foreach? Пока валидационные ошибки не выводяться в cart.php
 
-        $checkProduct = $this->modelUserProduct->checkProduct($userId, $productId);
+        $checkProduct = $this->modelUserProduct->checkProduct($userId, $productId); // !!! object UserProduct
 
         if (empty($errors)) {
             if (empty($checkProduct)) {
@@ -79,16 +79,16 @@ class CartController
         }
     }
 
-    private function validateMain($productId, $quantity):array // волидация не активна, смотри выше + какие два типа указать функции?
+    private function validateMain($productId, $quantity):array // волидация не активна, смотри выше!
     {
         $errors = [];
 
         if (isset($productId)) {
-            $getProduct = $this->modelProduct->getProductById($productId);
+            $getProduct = $this->modelProduct->getProductById($productId); // !!! object Product
 
             if (empty($productId)) {
                 $errors['product_id'] = 'The product id should not be empty';
-            } elseif ($getProduct === false) {
+            } elseif ($getProduct === null) {
                 $errors['product_id'] = 'There is no such product';
             }
         } else {
@@ -121,11 +121,11 @@ class CartController
 
         $errors = $this->validateMain($productId, $quantity); // Как использовать в cart.php if, else с foreach? Пока валидационные ошибки не выводяться в cart.php
 
-        $checkProduct = $this->modelUserProduct->checkProduct($userId, $productId);
+        $checkProduct = $this->modelUserProduct->checkProduct($userId, $productId); // !!! object UserProduct
 
         if (empty($errors)) {
             if (!empty($checkProduct)) {
-                if ($checkProduct['quantity'] === 1) {
+                if ($checkProduct->getQuantity() === 1) {
                     $this->modelUserProduct->deleteProduct($userId, $productId);
                 } else {
                     $this->modelUserProduct->minusProduct($userId, $productId, $quantity);

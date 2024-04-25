@@ -58,11 +58,11 @@ class UserProductController
         if (isset($_SESSION['user_id'])) {
             $userId = $_SESSION['user_id'];
 
-            $getUser = $this->modelUser->getUserById($userId);
+            $getUser = $this->modelUser->getUserById($userId); // !!! object User
 
             if (empty($userId)) {
                 $errors['user_id'] = 'The user id should not be empty';
-            } elseif ($getUser === false) {
+            } elseif ($getUser === null) {
                 $errors['user_id'] = 'Such a user is not registered';
             }
         } else {
@@ -72,11 +72,11 @@ class UserProductController
         if (isset($arr['product_id'])) {
             $productId = $arr['product_id'];
 
-            $getProduct = $this->modelProduct->getProductById($productId);
+            $getProduct = $this->modelProduct->getProductById($productId); // !!! object Product
 
             if (empty($productId)) {
                 $errors['product_id'] = 'The product id should not be empty';
-            } elseif ($getProduct === false) {
+            } elseif ($getProduct === null) {
                 $errors['product_id'] = 'There is no such product';
             }
         } else {
@@ -111,7 +111,7 @@ class UserProductController
             }
         }
 
-        $checkProducts = $this->modelProduct->getProducts();
+        $checkProducts = $this->modelProduct->getProducts(); // !!! object Product
 
         if (empty($checkProducts)) {
             echo 'Are no checkProducts';

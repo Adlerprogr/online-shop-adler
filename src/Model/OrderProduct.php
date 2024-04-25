@@ -4,10 +4,13 @@ namespace Model;
 
 class OrderProduct extends Model
 {
-    public function createOrderProduct(int $userId)
+    public function createOrderProduct(int $userId, int $orderId): void
     {
-        $stmt = $this->pdo->prepare("INSERT INTO order_product (user_id, product_id, quantity, order_id) SELECT user_id, product_id, quantity FROM user_products WHERE user_id = :user_id UNION SELECT id FROM orders WHERE ");
-        $stmt->execute(['user_id' => $userId]);
-
+        $stmt = $this->pdo->prepare("INSERT INTO order_product (user_id, product_id, quantity, order_id) 
+            SELECT user_id, product_id, quantity, :order_id 
+            FROM user_product 
+            WHERE user_id = :user_id
+        ");
+        $stmt->execute(['user_id' => $userId, 'order_id' => $orderId]);
     }
 }

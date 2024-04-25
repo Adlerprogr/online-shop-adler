@@ -32,7 +32,7 @@ class UserController
             $this->modelUser->create($firstName, $lastName, $email, $password, $repeatPassword);
         }
 
-        require_once './../View/registration.php';
+        require_once './../View/login.php';
     }
 
     private function validateRegistration(array $arr):array
@@ -66,9 +66,9 @@ class UserController
         if (isset($arr['email'])) {
             $email = $arr['email'];
 
-            $getEmail = $this->modelUser->getUserByEmail($email);
+            $getEmail = $this->modelUser->getUserByEmail($email); // !!! object User
 
-            if ($getEmail === true) {
+            if ($getEmail !== null) {
                 $errors['email'] = 'UserController with such email already exists';
             } elseif (empty($email)) {
                 $errors['email'] = 'Email not be empty';
@@ -119,12 +119,12 @@ class UserController
             $email = $_POST['email'];
             $password = $_POST['password'];
 
-            $getEmail = $this->modelUser->getUserByEmail($email);
+            $getEmail = $this->modelUser->getUserByEmail($email); // !!! object User
 
             if (!empty($getEmail)) {
-                if (password_verify($password, $getEmail['password'])) {
+                if (password_verify($password, $getEmail->getPassword())) {
                     session_start();
-                    $_SESSION['user_id'] = $getEmail['id'];
+                    $_SESSION['user_id'] = $getEmail->getId();
                     header("Location: /main");
                 } else {
                     echo 'The email or password is not correct';

@@ -70,17 +70,17 @@
                         <a href="#x" class="products__link">
 
                             <div class="product-data">
-                                <div class="product-data__price"><?php echo $product['price']; ?></div>
-                                <h3 class="product-data__name"><?php echo $product['name']; ?></h3>
-                                <h3 class="product-data__description"><?php echo $product['description']; ?></h3>
+                                <div class="product-data__price"><?php echo $product->getPrice(); ?></div>
+                                <h3 class="product-data__name"><?php echo $product->getName(); ?></h3>
+                                <h3 class="product-data__description"><?php echo $product->getDescription(); ?></h3>
                             </div>
 
                             <div class="product-data__image">
-                                <img src="<?php echo $product['img_url']; ?>" alt="lamp image" />
+                                <img src="<?php echo $product->getImgUrl(); ?>" alt="lamp image" />
                             </div>
 
                             <label style="color: red"><?php echo $errors['product_id'] ?? ''; ?></label>
-                            <input type="hidden" name="product_id" placeholder="Product ID" required="required" value="<?php echo $product['id']; ?>" />
+                            <input type="hidden" name="product_id" placeholder="Product ID" required="required" value="<?php echo $product->getId(); ?>" />
 
                             <label style="color: red"><?php echo $errors['quantity'] ?? ''; ?></label>
                             <input type="hidden" name="quantity" placeholder="Quantity" required="required" value = 1 />
@@ -90,7 +90,7 @@
 
                                 <form name='delete_product' action="/delete-product" method="POST">
 
-                                    <input type="hidden" name="product_id" placeholder="Product ID" required="required" value="<?php echo $product['id']; ?>" />
+                                    <input type="hidden" name="product_id" placeholder="Product ID" required="required" value="<?php echo $product->getId(); ?>" />
                                     <label style="color: red"><?php echo $errors['quantity'] ?? ''; ?></label>
                                     <input type="hidden" name="quantity" placeholder="Quantity" required="required" value = 1 />
 
@@ -104,7 +104,7 @@
 
                                 <form name='plus_product' action="/plus-product" method="POST">
 
-                                    <input type="hidden" name="product_id" placeholder="Product ID" required="required" value="<?php echo $product['id']; ?>" />
+                                    <input type="hidden" name="product_id" placeholder="Product ID" required="required" value="<?php echo $product->getId(); ?>" />
                                     <label style="color: red"><?php echo $errors['quantity'] ?? ''; ?></label>
                                     <input type="hidden" name="quantity" placeholder="Quantity" required="required" value = 1 />
 
@@ -267,13 +267,13 @@
         100% { background-position: 0 0; }
     }
 
-    BODY::before {
-        content: "";
-        position: fixed;
-        top: 0; right: 0; bottom: 0; left: 0;
-        background: rgba(10, 10, 200, .5);
-        z-index: -1;
-    }
+    /*BODY::before {*/
+    /*    content: "";*/
+    /*    position: fixed;*/
+    /*    top: 0; right: 0; bottom: 0; left: 0;*/
+    /*    background: rgba(10, 10, 200, .5);*/
+    /*    z-index: -1;*/
+    /*}*/
 
 
     *, *::before, *::after {
@@ -407,7 +407,7 @@
     =============*/
 
     .options {
-        display: flex;
+        display: flex   ;
         flex: 1 1 15%;
         font-size: 1.7rem;
         border-top: 2px solid #ddd;
@@ -650,7 +650,7 @@
         }
 
         .products__body {
-            display: block;
+            display: table;
         }
 
         .products__list {
