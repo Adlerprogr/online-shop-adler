@@ -4,14 +4,20 @@ namespace Controller;
 
 use Repository\UserProductRepository;
 use Request\CartRequest;
+use Service\AuthenticationService;
+use Service\CartService;
 
 class CartController
 {
     private UserProductRepository $userProductRepository;
+    private AuthenticationService  $authenticationService;
+    private CartService $cartService;
 
     public function __construct()
     {
         $this->userProductRepository = new UserProductRepository();
+        $this->authenticationService = new AuthenticationService();
+        $this->cartService = new CartService();
     }
 
     public function pathToPage(): void
@@ -21,89 +27,55 @@ class CartController
 
     public function getCart(): void
     {
-        if (session_status() == PHP_SESSION_NONE) { // Проверяю была ли запудена сессия, если нет запускаю, если да то пропускаю
-            session_start();
-            if (!isset($_SESSION['user_id'])) {
-                header("Location: /login");
-            }
-        } else {
-            if (!isset($_SESSION['user_id'])) {
-                header("Location: /login");
-            }
+        if (!$this->authenticationService->check()) {
+            header("Location: /login");
         }
 
-        $userId = $_SESSION['user_id'];
+        $user = $this->authenticationService->getCurrentUser();
+        $userId = $user->getId();
 
         $cartProducts = $this->userProductRepository->productsUserCart($userId); // !!! object UserProductRepository
 
         if (empty($cartProducts)) {
-            echo 'The basket is empty'; // Как использовать в cart.php if, else с foreach?
-        } else {
-            $sumQuantity = 0;
-            $sumPrice = 0;
-
-            foreach ($cartProducts as $cartProduct) {
-                $sumQuantity += $cartProduct->getQuantity();
-                $sumPrice += $cartProduct->getQuantity() * $cartProduct->getProductId()->getPrice();
-            }
+            $notification = 'Cart empty';
         }
+
+        $totalQuantityPrice = $this->cartService->getTotalPrice($cartProducts);
 
         require_once './../View/cart.php';
     }
 
-    public function addProductCart(CartRequest $request): void // в main.php при отправке формы отправляется всегда количевство 1
+    public function addProduct(CartRequest $request): void // в main.php при отправке формы отправляется всегда количевство 1
     {
-        session_start();
-        if (!isset($_SESSION['user_id'])) {
+        if (!$this->authenticationService->check()) {
             header("Location: /login");
         }
 
-        $arr = $request->getBody();
-
-        $userId = $_SESSION['user_id'];
-        $productId = $arr['product_id'];
-        $quantity = 1;
-
         $errors = $request->validate(); // Как использовать в cart.php if, else с foreach? Пока валидационные ошибки не выводяться в cart.php
 
-        $checkProduct = $this->userProductRepository->checkProduct($userId, $productId); // !!! object UserProductRepository
-
         if (empty($errors)) {
-            if (empty($checkProduct)) {
-                $this->userProductRepository->create($userId, $productId, $quantity);
-            } else {
-                $this->userProductRepository->updateQuantity($userId, $productId, $quantity);
-            }
+            $user = $this->authenticationService->getCurrentUser();
+            $userId = $user->getId();
+
+            $this->cartService->addProduct($userId, $request->getBody());
 
             header("Location: /main");
         }
     }
 
-    public function deleteProduct(CartRequest $request):void
+    public function deleteProduct(CartRequest $request): void
     {
-        session_start();
-        if (!isset($_SESSION['user_id'])) {
+        if (!$this->authenticationService->check()) {
             header("Location: /login");
         }
 
-        $arr = $request->getBody();
-
-        $userId = $_SESSION['user_id'];
-        $productId = $arr['product_id'];
-        $quantity = 1;
-
         $errors = $request->validate(); // Как использовать в cart.php if, else с foreach? Пока валидационные ошибки не выводяться в cart.php
 
-        $checkProduct = $this->userProductRepository->checkProduct($userId, $productId); // !!! object UserProductRepository
-
         if (empty($errors)) {
-            if (!empty($checkProduct)) {
-                if ($checkProduct->getQuantity() === 1) {
-                    $this->userProductRepository->deleteProduct($userId, $productId);
-                } else {
-                    $this->userProductRepository->minusProduct($userId, $productId, $quantity);
-                }
-            } // сделать else
+            $user = $this->authenticationService->getCurrentUser();
+            $userId = $user->getId();
+
+            $this->cartService->deleteProduct($userId, $request->getBody());
 
             header("Location: /main");
         }

@@ -73,15 +73,6 @@ class UserProductRepository extends Repository
         return $userProductArray;
     }
 
-//    public function checkQuantity(int $userId, int $productId)
-//    {
-//        $stmt = $this->pdo->prepare("SELECT * FROM user_products WHERE user_id = :user_id AND product_id = :product_id");
-//        $stmt->execute(['user_id' => $userId, 'product_id' => $productId]);
-//        $check = $stmt->fetch();
-//
-//        return $check;
-//    }
-
     public function minusProduct(int $userId, int $productId, int $quantity): void
     {
         $stmt = $this->pdo->prepare("UPDATE user_product SET quantity = (quantity - :quantity) WHERE user_id = :user_id AND product_id = :product_id");
@@ -93,15 +84,6 @@ class UserProductRepository extends Repository
         $stmt = $this->pdo->prepare("DELETE FROM user_product WHERE user_id = :user_id AND product_id = :product_id");
         $stmt->execute(['user_id' => $userId, 'product_id' => $productId]);
     }
-
-//    public function allProductsByUserId(int $user_id)
-//    {
-//        $stmt = $this->pdo->prepare("SELECT * FROM user_product WHERE user_id = :user_id");
-//        $stmt->execute(['user_id' => $user_id]);
-//        $productsUser = $stmt->fetch();
-//
-//        return $productsUser;
-//    }
 
     public function allDeleteProduct(int $userId): void
     {

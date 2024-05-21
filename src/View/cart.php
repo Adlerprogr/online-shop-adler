@@ -36,8 +36,8 @@
                     </div>
                     <div class="col-sm-4 p-0">
                         <p id="subtotal">
-                            <?php if (isset($sumPrice)): ?>
-                                <?php echo $sumPrice . ' ₽'; ?>
+                            <?php if (isset($totalQuantityPrice['sum_price'])): ?>
+                                <?php echo $totalQuantityPrice['sum_price'] . ' ₽'; ?>
                             <?php endif; ?>
                         </p>
                     </div>
@@ -56,8 +56,8 @@
                     </div>
                     <div class="col-sm-4 p-0">
                         <p id="tax">
-                            <?php if (isset($sumQuantity)): ?>
-                                <?php echo $sumQuantity . ' шт'; ?>
+                            <?php if (isset($totalQuantityPrice['sum_quantity'])): ?>
+                                <?php echo $totalQuantityPrice['sum_quantity'] . ' шт'; ?>
                             <?php endif; ?>
                         </p>
                     </div>

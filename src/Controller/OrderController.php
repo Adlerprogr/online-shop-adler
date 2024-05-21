@@ -2,29 +2,24 @@
 
 namespace Controller;
 
-use Repository\OrderRepository;
-use Repository\OrderProductRepository;
-use Repository\UserProductRepository;
 use Request\OrderRequest;
+use Service\AuthenticationService;
+use Service\OrderService;
 
 class OrderController
 {
-    private OrderRepository $modelOrder;
-    private OrderProductRepository $modelOrderProduct;
-    private UserProductRepository $modelUserProduct;
+    private OrderService $orderService;
+    private AuthenticationService $authenticationService;
 
     public function __construct()
     {
-        $this->modelOrder = new OrderRepository();
-        $this->modelOrderProduct = new OrderProductRepository();
-        $this->modelUserProduct = new UserProductRepository();
+        $this->orderService = new OrderService();
+        $this->authenticationService = new AuthenticationService();
     }
 
-    public function getOrder()
+    public function getOrder(): void
     {
-        session_start();
-
-        if (!isset($_SESSION['user_id'])) {
+        if (!$this->authenticationService->check()) {
             header("Location: /login");
         }
 
@@ -33,37 +28,17 @@ class OrderController
 
     public function postOrder(OrderRequest $request): void
     {
-        if (session_status() == PHP_SESSION_NONE) {
-            session_start();
-            if (!isset($_SESSION['user_id'])) {
-                header("Location: /login");
-            }
-        } else {
-            if (!isset($_SESSION['user_id'])) {
-                header("Location: /login");
-            }
+        if (!$this->authenticationService->check()) {
+            header("Location: /login");
         }
 
         $errors = $request->validate();
-        $arr = $request->getBody();
 
         if (empty($errors)) {
-            $userId = $_SESSION['user_id'];
+            $user = $this->authenticationService->getCurrentUser();
+            $userId = $user->getId();
 
-            $email = $arr['email'];
-            $phone = $arr['phone'];
-            $name = $arr['name'];
-            $address = $arr['address'];
-            $city = $arr['city'];
-            $postal_code = $arr['postal_code'];
-            $country = $arr['country'];
-
-            $this->modelOrder->createOrder($email, $phone, $name, $address, $city, $postal_code, $country);
-
-            $orderId = $this->modelOrder->getOrderId();
-
-            $this->modelOrderProduct->createOrderProduct($userId, $orderId);
-            $this->modelUserProduct->allDeleteProduct($userId);
+            $this->orderService->create($userId, $request->getBody());
         }
 
         require_once './../View/order.php';

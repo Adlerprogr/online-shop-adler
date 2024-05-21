@@ -5,14 +5,17 @@ namespace Controller;
 use Repository\UserRepository;
 use Request\LoginRequest;
 use Request\RegistrationRequest;
+use Service\AuthenticationService;
 
 class UserController
 {
     private UserRepository $userRepository;
+    private AuthenticationService  $authenticationService;
 
     public function __construct()
     {
         $this->userRepository = new UserRepository();
+        $this->authenticationService = new AuthenticationService();
     }
 
     public function getRegistration(): void
@@ -49,15 +52,20 @@ class UserController
         $arr = $request->getBody();
 
         if (empty($errors)) {
-            $email = $_POST['email'];
-            $password = $_POST['password'];
+            $email = $arr['email'];
+            $password = $arr['password'];
 
             $getEmail = $this->userRepository->getUserByEmail($email); // !!! object UserRepository
 
             if (!empty($getEmail)) {
                 if (password_verify($password, $getEmail->getPassword())) {
-                    session_start();
-                    $_SESSION['user_id'] = $getEmail->getId();
+                    if (!$this->authenticationService->check()) {
+                        header("Location: /login");
+                    }
+
+                    $user = $this->authenticationService->getCurrentUser();
+                    $userId = $user->getId();
+
                     header("Location: /main");
                 } else {
                     echo 'The email or password is not correct';

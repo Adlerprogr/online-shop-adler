@@ -72,11 +72,22 @@ class App
         '/plus-product' => [
             'POST' => [
                 'class' => CartController::class,
-                'method' => 'addProductCart',
+                'method' => 'addProduct',
                 'request' => CartRequest::class
             ],
         ],
         '/order' => [
+            'GET' => [
+                'class' => OrderController::class,
+                'method' => 'getOrder'
+            ],
+            'POST' => [
+                'class' => OrderController::class,
+                'method' => 'postOrder',
+                'request' => OrderRequest::class
+            ],
+        ],
+        '/admin-order' => [
             'GET' => [
                 'class' => OrderController::class,
                 'method' => 'getOrder'
